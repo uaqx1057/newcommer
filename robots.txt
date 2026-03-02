@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://newcomerconnect.ca/sitemap-index.xml
+Sitemap: https://newcomerconnect.ca/sitemap-pages.xml
+Sitemap: https://newcomerconnect.ca/sitemap-images.xml
+Sitemap: https://newcomerconnect.ca/sitemap.xml
