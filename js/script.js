@@ -173,28 +173,30 @@ function initUnifiedFooter() {
       <div class="footer-modern-wrap">
         <a href="index.html" class="footer-modern-logo" aria-label="Newcomer Connect">
           <img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="Newcomer Connect">
-          <span>new<br>comer<br>connect</span>
+          <span>Newcomer<br>Connect</span>
         </a>
         <h2 class="footer-modern-title">Ready to Start Your Canadian Journey?</h2>
 
         <div class="footer-modern-contacts">
-          <a href="mailto:noreply@newcomer.com" class="footer-pill">noreply@newcomer.com</a>
-          <a href="tel:+610383766284" class="footer-pill">+61 (0) 383 766 284</a>
+          <a href="mailto:info@newcomerconnect.ca" class="footer-pill">info@newcomerconnect.ca</a>
+          <a href="tel:+12893000321" class="footer-pill">Canada: +1-289-300-0321</a>
+          <a href="tel:+923370222232" class="footer-pill">Pakistan: +92-337-022-2232</a>
+          <a href="https://maps.google.com/?q=50+Steeles+Ave+East,+Unit+209,+Milton,+Ontario,+L9T+4W9,+Canada" class="footer-pill" target="_blank" rel="noopener">Canada Office: 50 Steeles Ave East, Unit 209, Milton, ON</a>
+          <a href="https://maps.google.com/?q=Suite+35,+Moti+Bazar+Mall,+Safari+Villas+1,+Bahria+Town,+Rawalpindi,+Pakistan" class="footer-pill" target="_blank" rel="noopener">Pakistan Office: Suite#35, Moti Bazar Mall, Bahria Town, Rawalpindi</a>
         </div>
 
         <div class="footer-modern-line" aria-hidden="true"></div>
 
         <div class="footer-modern-social">
-          <a href="#" class="footer-social-pill">Behance</a>
-          <a href="#" class="footer-social-pill">Facebook</a>
-          <a href="#" class="footer-social-pill">Twitter</a>
-          <a href="#" class="footer-social-pill">Dribbble</a>
-          <a href="#" class="footer-social-pill">Instagram</a>
+          <a href="services.html" class="footer-social-pill">Services</a>
+          <a href="team.html" class="footer-social-pill">Our Team</a>
+          <a href="faq.html" class="footer-social-pill">FAQ</a>
+          <a href="contact.html" class="footer-social-pill">Book Consultation</a>
         </div>
 
         <div class="footer-modern-line" aria-hidden="true"></div>
 
-        <p class="footer-modern-copy">&copy; 2026 Newcomer Connect | All Rights Reserved</p>
+        <p class="footer-modern-copy">&copy; 2026 Newcomer Connect | All Rights Reserved | Website by <a href="https://codewithusman.com" target="_blank" rel="noopener">codewithusman.com</a></p>
       </div>
     </div>
   `;
