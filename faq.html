@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -12,11 +12,11 @@
   <meta property="og:description" content="Get clear answers to newcomer immigration and settlement questions.">
   <meta property="og:url" content="https://newcomerconnect.ca/faq.html">
   <meta property="og:site_name" content="Newcomer Connect">
-  <meta property="og:image" content="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg">
+  <meta property="og:image" content="assets/images/toronto-cityscape.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FAQ | Newcomer Connect Immigration & Settlement Support">
   <meta name="twitter:description" content="Get clear answers to newcomer immigration and settlement questions.">
-  <meta name="twitter:image" content="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg">
+  <meta name="twitter:image" content="assets/images/toronto-cityscape.jpg">
   <meta name="theme-color" content="#D8292F">
   <script type="application/ld+json">
   {
@@ -92,24 +92,33 @@
     ]
   }
   </script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header id="mainHeader">
     <div class="container">
       <nav class="navbar">
-        <a href="index.html" class="logo"><img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="NCC">Newcomer<span class="logo-highlight">Connect</span></a>
-        <button class="nav-toggle" id="navToggle">&#9776;</button>
+        <a href="index.html" class="logo">
+          <img src="assets/icons/logo.svg" alt="NCC">
+          Newcomer<span class="logo-highlight">Connect</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu"></button>
         <nav id="navMenu">
-          <button class="nav-close" id="navClose">&#10005;</button>
+          <button class="nav-close" id="navClose" aria-label="Close menu"></button>
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="team.html">Our Team</a></li>
-            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="faq.html" aria-current="page">FAQ</a></li>
             <li><a href="blog.html">Blog</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
             <li><a href="contact.html" class="nav-cta">Book Consultation</a></li>
+            <button class="theme-switcher" id="themeSwitcher">
+              <ion-icon name="moon-outline"></ion-icon>
+            </button>
           </ul>
         </nav>
       </nav>
@@ -145,7 +154,7 @@
   </section>
   <footer>
     <div class="footer-top"><div class="container"><div class="footer-grid">
-      <div class="footer-brand"><a href="index.html" class="logo"><img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="NCC">Newcomer<span class="logo-highlight">Connect</span></a><p>Your trusted partner for settlement in Canada.</p><div class="social-links"><a href="#" class="social-link">f</a><a href="#" class="social-link">X</a><a href="#" class="social-link">in</a></div></div>
+      <div class="footer-brand"><a href="index.html" class="logo"><img src="assets/icons/logo.svg" alt="NCC">Newcomer<span class="logo-highlight">Connect</span></a><p>Your trusted partner for settlement in Canada.</p><div class="social-links"><a href="#" class="social-link">f</a><a href="#" class="social-link">X</a><a href="#" class="social-link">in</a></div></div>
       <div class="footer-col"><h5>Quick Links</h5><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h5>Services</h5><ul><li><a href="pre-arrival.html">Pre-Arrival</a></li><li><a href="post-arrival.html">Post-Arrival</a></li><li><a href="legal-services.html">Legal</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
       <div class="footer-col"><h5>Contact</h5><ul><li><a href="mailto:info@newcomerconnect.ca">info@newcomerconnect.ca</a></li><li><a href="tel:+12893000321">Canada: +1-289-300-0321</a></li><li><a href="tel:+923370222232">Pakistan: +92-337-022-2232</a></li><li><a href="#">50 Steeles Ave East, Unit 209, Milton, Ontario, Canada</a></li><li><a href="#">Suite#35, Moti Bazar Mall, Bahria Town, Rawalpindi, Pakistan</a></li></ul></div>

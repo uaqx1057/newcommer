@@ -12,11 +12,11 @@
   <meta property="og:description" content="Execution-focused support for your first critical months in Canada.">
   <meta property="og:url" content="https://newcomerconnect.ca/post-arrival.html">
   <meta property="og:site_name" content="Newcomer Connect">
-  <meta property="og:image" content="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg">
+  <meta property="og:image" content="assets/images/toronto-cityscape.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Post-Arrival Services | Newcomer Connect">
   <meta name="twitter:description" content="Execution-focused support for your first critical months in Canada.">
-  <meta name="twitter:image" content="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg">
+  <meta name="twitter:image" content="assets/images/toronto-cityscape.jpg">
   <meta name="theme-color" content="#D8292F">
   <script type="application/ld+json">
   {
@@ -75,26 +75,34 @@
     ]
   }
   </script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <!-- Header & Navigation -->
-  <header>
+  <header id="mainHeader">
     <div class="container">
       <nav class="navbar">
-        <div class="logo">
-          <img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="NCC" style="height: 35px; margin-right: 10px;"> Newcomer Connect
-        </div>
-        <button class="nav-toggle" id="navToggle">☰</button>
+        <a href="index.html" class="logo">
+          <img src="assets/icons/logo.svg" alt="NCC">
+          Newcomer<span class="logo-highlight">Connect</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu"></button>
         <nav id="navMenu">
+          <button class="nav-close" id="navClose" aria-label="Close menu"></button>
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
+            <li><a href="services.html" aria-current="page">Services</a></li>
             <li><a href="team.html">Our Team</a></li>
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="blog.html">Blog</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="contact.html" class="nav-cta">Book Consultation</a></li>
+            <button class="theme-switcher" id="themeSwitcher">
+              <ion-icon name="moon-outline"></ion-icon>
+            </button>
           </ul>
         </nav>
       </nav>
@@ -141,7 +149,7 @@
       <!-- Service 1: Airport Welcome -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">✈️</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/pre-arrival.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Airport Welcome & Immediate Essentials</h3>
             <p class="card-text">
@@ -157,7 +165,7 @@
       <!-- Service 2: Government Identity & Legal Documentation -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">📝</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/legal.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Government Identity & Legal Documentation</h3>
             <p class="card-text">
@@ -173,7 +181,7 @@
       <!-- Service 3: Accommodation Support -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">🏡</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/physical-presence.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Accommodation Support</h3>
             <p class="card-text">
@@ -186,7 +194,7 @@
       <!-- Service 4: Banking & Financial Architecture -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">💳</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/personalized-plans.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Banking & Financial Architecture</h3>
             <p class="card-text">
@@ -202,7 +210,7 @@
       <!-- Service 5: Career Launch & Professional Advocacy -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">💼</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/experienced-team.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Career Launch & Professional Advocacy</h3>
             <p class="card-text">
@@ -218,7 +226,7 @@
       <!-- Service 6: Family, Education & Childcare -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">👨‍👩‍👧‍👦</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/ethical.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Family, Education & Childcare Logistics</h3>
             <p class="card-text">
@@ -234,7 +242,7 @@
       <!-- Service 7: Mobility & Transportation -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">🚗</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/end-to-end.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Mobility & Transportation Systems</h3>
             <p class="card-text">
@@ -250,7 +258,7 @@
       <!-- Service 8: Community Integration -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">🤝</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/virtual-services.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Community Integration & Orientation</h3>
             <p class="card-text">
@@ -266,7 +274,7 @@
       <!-- Service 9: Ongoing Support -->
       <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--accent-color);">
         <div style="display: flex; gap: 1rem; align-items: start;">
-          <div style="font-size: 2rem; flex-shrink: 0;">📞</div>
+          <div style="font-size: 2rem; flex-shrink: 0;"><img src="assets/icons/logo.svg" alt=""></div>
           <div style="flex-grow: 1;">
             <h3 class="card-title">Institutional Ongoing Support</h3>
             <p class="card-text">

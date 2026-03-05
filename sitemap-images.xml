@@ -4,64 +4,78 @@
   <url>
     <loc>https://newcomerconnect.ca/</loc>
     <image:image>
-      <image:loc>https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg</image:loc>
+      <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
       <image:title>Newcomer Connect Homepage</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/services.html</loc>
     <image:image>
-      <image:loc>https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg</image:loc>
+      <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
       <image:title>Immigration and Settlement Services</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/pre-arrival.html</loc>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image:loc>
+      <image:loc>https://newcomerconnect.ca/assets/images/unsplash-1521791136064-7986c2920216.jpg</image:loc>
       <image:title>Pre Arrival Services Canada</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/post-arrival.html</loc>
     <image:image>
-      <image:loc>https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg</image:loc>
+      <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
       <image:title>Post Arrival Services Canada</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/legal-services.html</loc>
     <image:image>
-      <image:loc>https://ghostwhite-hornet-258100.hostingersite.com/wp-content/uploads/2026/02/toronto-ontario-canada-cityscape.jpg</image:loc>
+      <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
       <image:title>Immigration Legal Services Canada</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/about.html</loc>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image:loc>
+      <image:loc>https://newcomerconnect.ca/assets/images/unsplash-1521791136064-7986c2920216.jpg</image:loc>
       <image:title>About Newcomer Connect</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://newcomerconnect.ca/team.html</loc>
-    <image:image>
-      <image:loc>https://newcomerconnect.ca/assets/huma.webp</image:loc>
-      <image:title>Newcomer Connect Leadership Team</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/founder-story.html</loc>
     <image:image>
       <image:loc>https://newcomerconnect.ca/assets/huma.webp</image:loc>
-      <image:title>Founder Story Huma Tahir</image:title>
+      <image:title>Founder Story of Huma Tahir</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/team.html</loc>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/huma.webp</image:loc>
+      <image:title>Newcomer Connect Team</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/testimonials.html</loc>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
+      <image:title>Client Testimonials</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/faq.html</loc>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
+      <image:title>Frequently Asked Questions</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://newcomerconnect.ca/blog.html</loc>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image:loc>
-      <image:title>Newcomer Connect Blog and Resources</image:title>
+      <image:loc>https://newcomerconnect.ca/assets/images/unsplash-1454165804606-c3d57bc86b40.jpg</image:loc>
+      <image:title>Newcomer Connect Blog</image:title>
     </image:image>
   </url>
 </urlset>

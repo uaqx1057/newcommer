@@ -5,6 +5,7 @@
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
   initNav();
   initMobileMenu();
   initScrollReveal();
@@ -14,6 +15,62 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initUnifiedFooter();
 });
+
+/*  THEME TOGGLE  */
+function initThemeToggle() {
+  const root = document.documentElement;
+  const switcher = document.getElementById('themeSwitcher');
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme === 'dark') {
+    root.setAttribute('data-theme', 'dark');
+  } else {
+    root.removeAttribute('data-theme');
+  }
+
+  applyThemeLogoAssets();
+
+  if (!switcher) return;
+
+  if (!switcher.querySelector('ion-icon')) {
+    switcher.innerHTML = `<ion-icon class="theme-switcher-icon" aria-hidden="true"></ion-icon>`;
+  }
+  const icon = switcher.querySelector('ion-icon');
+
+  const setToggleState = () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    switcher.setAttribute('aria-pressed', String(isDark));
+    switcher.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    if (icon) {
+      icon.setAttribute('name', isDark ? 'sunny-outline' : 'moon-outline');
+    }
+    applyThemeLogoAssets();
+  };
+
+  setToggleState();
+
+  switcher.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      root.removeAttribute('data-theme');
+      localStorage.removeItem('theme');
+    } else {
+      root.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    setToggleState();
+  });
+}
+
+function applyThemeLogoAssets() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const logoSrc = isDark ? 'assets/icons/logodark.png' : 'assets/icons/logolight.png';
+
+  document.querySelectorAll('.logo img, .footer-modern-logo img').forEach((img) => {
+    img.src = logoSrc;
+    img.alt = 'Newcomer Connect';
+  });
+}
 
 /*  STICKY NAVBAR  */
 function initNav() {
@@ -172,7 +229,7 @@ function initUnifiedFooter() {
     <div class="container">
       <div class="footer-modern-wrap">
         <a href="index.html" class="footer-modern-logo" aria-label="Newcomer Connect">
-          <img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="Newcomer Connect">
+          <img src="assets/icons/logo.svg" alt="Newcomer Connect">
           <span>Newcomer<br>Connect</span>
         </a>
         <h2 class="footer-modern-title">Ready to Start Your Canadian Journey?</h2>
@@ -200,4 +257,6 @@ function initUnifiedFooter() {
       </div>
     </div>
   `;
+
+  applyThemeLogoAssets();
 }

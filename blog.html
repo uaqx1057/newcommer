@@ -12,11 +12,11 @@
   <meta property="og:description" content="Actionable newcomer insights on immigration, settlement, and career planning in Canada.">
   <meta property="og:url" content="https://newcomerconnect.ca/blog.html">
   <meta property="og:site_name" content="Newcomer Connect">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:image" content="assets/images/unsplash-1454165804606-c3d57bc86b40.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Blog & Resources | Newcomer Connect">
   <meta name="twitter:description" content="Actionable newcomer insights on immigration, settlement, and career planning in Canada.">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80">
+  <meta name="twitter:image" content="assets/images/unsplash-1454165804606-c3d57bc86b40.jpg">
   <meta name="theme-color" content="#D8292F">
   <script type="application/ld+json">
   {
@@ -73,16 +73,21 @@
     ]
   }
   </script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header id="mainHeader">
     <div class="container">
       <nav class="navbar">
-        <a href="index.html" class="logo"><img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="NCC">Newcomer<span class="logo-highlight">Connect</span></a>
-        <button class="nav-toggle" id="navToggle">&#9776;</button>
+        <a href="index.html" class="logo">
+          <img src="assets/icons/logo.svg" alt="NCC">
+          Newcomer<span class="logo-highlight">Connect</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu"></button>
         <nav id="navMenu">
-          <button class="nav-close" id="navClose">&#10005;</button>
+          <button class="nav-close" id="navClose" aria-label="Close menu"></button>
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
@@ -90,7 +95,11 @@
             <li><a href="team.html">Our Team</a></li>
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="blog.html" aria-current="page">Blog</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
             <li><a href="contact.html" class="nav-cta">Book Consultation</a></li>
+            <button class="theme-switcher" id="themeSwitcher">
+              <ion-icon name="moon-outline"></ion-icon>
+            </button>
           </ul>
         </nav>
       </nav>
@@ -106,15 +115,7 @@
     </div>
   </section>
 
-  <section class="section-sm info-band">
-    <div class="container">
-      <div class="info-grid">
-        <div class="info-pill">Updated weekly with practical guides</div>
-        <div class="info-pill">Focused on real newcomer challenges</div>
-        <div class="info-pill">Immigration + settlement + legal topics</div>
-      </div>
-    </div>
-  </section>
+
 
   <section class="section bg-white">
     <div class="container">
@@ -125,7 +126,7 @@
       </div>
       <div class="grid">
         <article class="blog-card reveal">
-          <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80" alt="Express Entry document planning"></div>
+          <div class="blog-thumb"><img src="assets/images/unsplash-1454165804606-c3d57bc86b40.jpg" alt="Express Entry document planning"></div>
           <div class="blog-body">
             <div class="blog-meta">March 1, 2026 · Immigration</div>
             <h4>Express Entry in 2026: What Changed and How to Prepare</h4>
@@ -134,7 +135,7 @@
           </div>
         </article>
         <article class="blog-card reveal reveal-d1">
-          <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80" alt="Newcomer family planning first month in Canada"></div>
+          <div class="blog-thumb"><img src="assets/images/unsplash-1521791136064-7986c2920216.jpg" alt="Newcomer family planning first month in Canada"></div>
           <div class="blog-body">
             <div class="blog-meta">February 25, 2026 · Settlement</div>
             <h4>Your First 30 Days in Canada: Complete Settlement Checklist</h4>
@@ -143,7 +144,7 @@
           </div>
         </article>
         <article class="blog-card reveal reveal-d2">
-          <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80" alt="Apartment keys and rental agreement"></div>
+          <div class="blog-thumb"><img src="assets/images/unsplash-1560518883-ce09059eeffa.jpg" alt="Apartment keys and rental agreement"></div>
           <div class="blog-body">
             <div class="blog-meta">February 20, 2026 · Housing</div>
             <h4>Rental Scams in Canada: Warning Signs Every Newcomer Should Know</h4>
@@ -152,7 +153,7 @@
           </div>
         </article>
         <article class="blog-card reveal">
-          <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Professional interview preparation"></div>
+          <div class="blog-thumb"><img src="assets/images/unsplash-1552664730-d307ca884978.jpg" alt="Professional interview preparation"></div>
           <div class="blog-body">
             <div class="blog-meta">February 15, 2026 · Career</div>
             <h4>Credential Recognition: Fastest Path to Professional Employment</h4>
@@ -161,7 +162,7 @@
           </div>
         </article>
         <article class="blog-card reveal reveal-d1">
-          <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=900&q=80" alt="Credit card and budgeting notebook"></div>
+          <div class="blog-thumb"><img src="assets/images/unsplash-1563013544-824ae1b704d3.jpg" alt="Credit card and budgeting notebook"></div>
           <div class="blog-body">
             <div class="blog-meta">February 10, 2026 · Finance</div>
             <h4>How to Build Credit History in Canada from Day One</h4>
@@ -170,7 +171,7 @@
           </div>
         </article>
         <article class="blog-card reveal reveal-d2">
-          <div class="blog-thumb"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80" alt="Students in classroom"></div>
+          <div class="blog-thumb"><img src="assets/images/unsplash-1503676260728-1c00da094a0b.jpg" alt="Students in classroom"></div>
           <div class="blog-body">
             <div class="blog-meta">February 5, 2026 · Education</div>
             <h4>School Enrollment in Canada: What Newcomer Parents Need to Prepare</h4>
@@ -195,7 +196,7 @@
 
   <footer>
     <div class="footer-top"><div class="container"><div class="footer-grid">
-      <div class="footer-brand"><a href="index.html" class="logo"><img src="https://ghostwhite-hornet-258100.hostingersite.com/wp-content/themes/betheme/images/cookies.png" alt="NCC">Newcomer<span class="logo-highlight">Connect</span></a><p>Your trusted partner for settlement in Canada.</p><div class="social-links"><a href="#" class="social-link">f</a><a href="#" class="social-link">X</a><a href="#" class="social-link">in</a></div></div>
+      <div class="footer-brand"><a href="index.html" class="logo"><img src="assets/icons/logo.svg" alt="NCC">Newcomer<span class="logo-highlight">Connect</span></a><p>Your trusted partner for settlement in Canada.</p><div class="social-links"><a href="#" class="social-link">f</a><a href="#" class="social-link">X</a><a href="#" class="social-link">in</a></div></div>
       <div class="footer-col"><h5>Quick Links</h5><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h5>Services</h5><ul><li><a href="pre-arrival.html">Pre-Arrival</a></li><li><a href="post-arrival.html">Post-Arrival</a></li><li><a href="legal-services.html">Legal</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
       <div class="footer-col"><h5>Contact</h5><ul><li><a href="mailto:info@newcomerconnect.ca">info@newcomerconnect.ca</a></li><li><a href="tel:+12893000321">Canada: +1-289-300-0321</a></li><li><a href="tel:+923370222232">Pakistan: +92-337-022-2232</a></li><li><a href="#">50 Steeles Ave East, Unit 209, Milton, Ontario, Canada</a></li><li><a href="#">Suite#35, Moti Bazar Mall, Bahria Town, Rawalpindi, Pakistan</a></li></ul></div>

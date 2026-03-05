@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Internal logo comparison page for Newcomer Connect brand assets." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Newcomer Connect - Logo Options</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --card: #ffffff;
+      --text: #111111;
+      --muted: #555555;
+      --brand: #d8292f;
+      --border: #e5e5e5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 40px 20px;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 2rem; }
+    p { margin: 0 0 24px; color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    }
+    .preview {
+      height: 180px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      border: 1px dashed #d9d9d9;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .preview img { width: 120px; height: 120px; }
+    .label { font-weight: 700; margin-bottom: 6px; }
+    .file {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+      color: var(--brand);
+      word-break: break-all;
+    }
+    .hint {
+      margin-top: 24px;
+      padding: 14px;
+      border-left: 4px solid var(--brand);
+      background: #fff;
+      border-radius: 8px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Logo Options</h1>
+    <p>Choose one of these SVG concepts, then replace <strong>assets/icons/logo.svg</strong> with your selected file.</p>
+
+    <div class="grid">
+      <article class="card">
+        <div class="preview"><img src="assets/icons/logo-bridge-home.svg" alt="Bridge to home logo" /></div>
+        <div class="label">Option 1: Bridge to Home</div>
+        <div class="file">assets/icons/logo-bridge-home.svg</div>
+      </article>
+
+      <article class="card">
+        <div class="preview"><img src="assets/icons/logo-compass-home.svg" alt="Compass and home logo" /></div>
+        <div class="label">Option 2: Compass + Home</div>
+        <div class="file">assets/icons/logo-compass-home.svg</div>
+      </article>
+
+      <article class="card">
+        <div class="preview"><img src="assets/icons/logo-nc-path.svg" alt="NC path monogram logo" /></div>
+        <div class="label">Option 3: NC Path Monogram</div>
+        <div class="file">assets/icons/logo-nc-path.svg</div>
+      </article>
+    </div>
+
+    <div class="hint">
+      Quick use: copy your selected file and rename it to <strong>assets/icons/logo.svg</strong> to apply site-wide.
+    </div>
+  </div>
+</body>
+</html>
