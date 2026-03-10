@@ -208,11 +208,61 @@ function initFAQ() {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   const success = document.getElementById('formSuccess');
+  const error = document.getElementById('formError');
+  const submitButton = form ? form.querySelector('button[type="submit"]') : null;
+  const defaultButtonText = submitButton ? submitButton.innerHTML : '';
   if (!form) return;
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    form.style.display = 'none';
-    if (success) success.style.display = 'block';
+
+    if (success) success.style.display = 'none';
+    if (error) error.style.display = 'none';
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
+
+    try {
+      const endpoint = form.getAttribute('action');
+      if (!endpoint) throw new Error('Missing form endpoint');
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: new FormData(form)
+      });
+
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || !payload.success) {
+        const message = payload && payload.message ? payload.message : 'Request failed';
+        throw new Error(message);
+      }
+
+      form.reset();
+      form.style.display = 'none';
+      if (success) {
+        if (payload.message) {
+          success.textContent = payload.message;
+        }
+        success.style.display = 'block';
+      }
+    } catch (submitError) {
+      if (error) {
+        if (submitError && submitError.message) {
+          error.textContent = submitError.message;
+        }
+        error.style.display = 'block';
+      }
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = defaultButtonText;
+      }
+    }
   });
 }
 
