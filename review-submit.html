@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Your Review | Newcomer Connect</title>
+  <meta name="description" content="Share your Newcomer Connect experience to help future newcomers make informed decisions.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="mainHeader">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <img src="assets/icons/logo-real.png" alt="NCC">
+          Newcomer<span class="logo-highlight">Connect</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu"></button>
+        <nav id="navMenu">
+          <button class="nav-close" id="navClose" aria-label="Close menu"></button>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="team.html">Our Team</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="review-submit.html" aria-current="page">Share Review</a></li>
+            <li><a href="contact.html" class="nav-cta">Book Consultation</a></li>
+            <button class="theme-switcher" id="themeSwitcher">
+              <ion-icon name="moon-outline"></ion-icon>
+            </button>
+          </ul>
+        </nav>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="page-hero-grid"></div>
+    <div class="container">
+      <div class="badge badge-gold">Share Feedback</div>
+      <h1>Tell Us About Your Experience</h1>
+      <p>Your review helps future newcomers choose the right support with confidence and clarity.</p>
+    </div>
+  </section>
+
+  <section class="section bg-soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="badge badge-blue">Review Form</div>
+        <h2>Submit Your Review</h2>
+        <p>All reviews are moderated before publishing. Your email is used internally only and is never shown publicly.</p>
+      </div>
+
+      <div class="form-card review-form-card reveal">
+        <form class="review-form" action="review-submit.php" method="POST">
+          <input type="text" name="review_reference_code" autocomplete="new-password" tabindex="-1" class="hp-field" aria-hidden="true" data-lpignore="true" data-1p-ignore="true">
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="reviewName">Your Name *</label>
+              <input class="form-control" id="reviewName" type="text" name="name" required placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reviewEmail">Email (private) *</label>
+              <input class="form-control" id="reviewEmail" type="email" name="email" required placeholder="you@example.com">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="reviewCity">City *</label>
+              <input class="form-control" id="reviewCity" type="text" name="city" required placeholder="e.g., Toronto">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reviewRating">Rating *</label>
+              <select class="form-control" id="reviewRating" name="rating" required>
+                <option value="">Select rating</option>
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Very Good</option>
+                <option value="3">3 - Good</option>
+                <option value="2">2 - Fair</option>
+                <option value="1">1 - Needs Improvement</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reviewService">Service Chosen *</label>
+            <select class="form-control" id="reviewService" name="service" required>
+              <option value="">Select a service</option>
+              <option>Pre-Arrival Planning</option>
+              <option>Post-Arrival Settlement</option>
+              <option>Immigration Strategy</option>
+              <option>Legal Services</option>
+              <option>Career and Licensing Guidance</option>
+              <option>Housing and Schooling Support</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reviewMessage">Your Review *</label>
+            <textarea class="form-control" id="reviewMessage" name="message" required placeholder="Share your experience with Newcomer Connect..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
+        </form>
+
+        <div class="review-success" role="status" aria-live="polite" style="display:none; margin-top:18px;"></div>
+        <div class="review-error" role="alert" style="display:none; margin-top:18px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer></footer>
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

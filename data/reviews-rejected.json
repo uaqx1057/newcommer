@@ -1,0 +1,58 @@
+[
+    {
+        "id": "20260420195507-736390",
+        "name": "UserFlow20260420225507",
+        "city": "Dammam",
+        "service": "Legal Services",
+        "message": "trace submission",
+        "rating": 5,
+        "email": "trace@example.com",
+        "status": "rejected",
+        "ip": "127.0.0.1",
+        "created_at": "2026-04-20T19:55:07Z",
+        "updated_at": "2026-04-20T19:55:47Z",
+        "rejected_at": "2026-04-20T19:55:47Z"
+    },
+    {
+        "id": "20260420195858-e32c27",
+        "name": "NoRedirectFlow20260420225858",
+        "city": "Dammam",
+        "service": "Legal Services",
+        "message": "no redirect flow check",
+        "rating": 5,
+        "email": "noredirect@example.com",
+        "status": "rejected",
+        "ip": "127.0.0.1",
+        "created_at": "2026-04-20T19:58:58Z",
+        "updated_at": "2026-04-20T19:59:02Z",
+        "rejected_at": "2026-04-20T19:59:02Z"
+    },
+    {
+        "id": "20260420195601-95b07c",
+        "name": "FastB20260420225600",
+        "city": "Dammam",
+        "service": "Legal Services",
+        "message": "fast test b",
+        "rating": 5,
+        "email": "fastb@example.com",
+        "status": "rejected",
+        "ip": "127.0.0.1",
+        "created_at": "2026-04-20T19:56:01Z",
+        "updated_at": "2026-04-20T19:59:03Z",
+        "rejected_at": "2026-04-20T19:59:03Z"
+    },
+    {
+        "id": "20260420195600-035f5f",
+        "name": "FastA20260420225600",
+        "city": "Dammam",
+        "service": "Legal Services",
+        "message": "fast test a",
+        "rating": 5,
+        "email": "fasta@example.com",
+        "status": "rejected",
+        "ip": "127.0.0.1",
+        "created_at": "2026-04-20T19:56:00Z",
+        "updated_at": "2026-04-20T19:59:06Z",
+        "rejected_at": "2026-04-20T19:59:06Z"
+    }
+]

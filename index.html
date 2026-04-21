@@ -26,7 +26,7 @@
         "@type": "Organization",
         "name": "Newcomer Connect",
         "url": "https://newcomerconnect.ca/",
-        "logo": "assets/icons/logo.svg",
+        "logo": "assets/icons/logo-real.png",
         "contactPoint": [
           {
             "@type": "ContactPoint",
@@ -113,7 +113,7 @@
     <div class="container">
       <nav class="navbar">
         <a href="index.html" class="logo">
-          <img src="assets/icons/logo.svg" alt="NCC">
+          <img src="assets/icons/logo-real.png" alt="NCC">
           Newcomer<span class="logo-highlight">Connect</span>
         </a>
         <button class="nav-toggle" id="navToggle" aria-label="Open menu"></button>
@@ -144,6 +144,7 @@
     </div>
     <div class="hero-glow"></div>
     <div class="hero-grid-overlay"></div>
+    <div class="hero-leaf-rain" aria-hidden="true"></div>
     <div class="container">
       <div class="hero-layout">
         <!-- LEFT CONTENT -->
@@ -280,7 +281,7 @@
         <div class="slider" data-slider data-autoplay="4500">
           <div class="slides">
             <div class="slide">
-              <img src="assets/images/toronto-cityscape.jpg" alt="Toronto skyline">
+              <img src="assets/images/slider/toronto-blue-hour.jpg" alt="Toronto skyline at blue hour" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Arrive to a Confident Start</h3>
@@ -289,7 +290,7 @@
               </div>
             </div>
             <div class="slide">
-              <img src="assets/images/unsplash-1517935706615-2717063c2225.jpg" alt="Downtown Canada">
+              <img src="assets/images/slider/toronto-downtown.jpg" alt="Downtown Toronto urban center" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Settle in the Right Neighbourhood</h3>
@@ -298,7 +299,7 @@
               </div>
             </div>
             <div class="slide">
-              <img src="assets/images/unsplash-1534351590666-13e3e96b5017.jpg" alt="Family life in Canada">
+              <img src="assets/images/slider/canada-family-park.jpg" alt="Family life and city parks in Canada" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Build a Strong New Routine</h3>
@@ -325,10 +326,10 @@
       <div class="split-section reveal">
         <div class="split-visual">
           <div class="split-img-main">
-            <img src="assets/images/unsplash-1521791136064-7986c2920216.jpg" alt="Expert consultation">
+            <img src="assets/images/premium-online/toronto-night-cn.jpg" alt="Toronto skyline at night with CN Tower" loading="lazy" decoding="async">
           </div>
           <div class="split-img-accent">
-            <img src="assets/images/unsplash-1497366754035-f200968a6e72.jpg" alt="Office setup">
+            <img src="assets/images/premium-online/spring-couple-city.jpg" alt="Couple walking through a vibrant Canadian city street" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="split-content">
@@ -357,7 +358,7 @@
       <div class="split-section reverse reveal">
         <div class="split-visual">
           <div class="split-img-main ceo-portrait">
-            <img src="assets/huma.webp" alt="Huma Tahir, Founder and CEO">
+            <img src="assets/huma.webp" alt="Huma Tahir, Founder and CEO" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="split-content">
@@ -458,23 +459,97 @@
         <h2>Watch & Learn</h2>
         <p>Short visual guides to understand the move, settlement flow, and service process.</p>
       </div>
-      <div class="video-grid">
-        <article class="video-card reveal">
-          <iframe class="video-frame" src="https://www.youtube.com/embed/x9M2RZf4Wm8?rel=0" title="Canada immigration overview" loading="lazy" allowfullscreen></iframe>
-          <div class="video-card-body">
-            <h4>Immigration Pathway Overview</h4>
-            <p>A quick visual summary of planning your move and selecting the right immigration stream.</p>
-          </div>
-        </article>
-        <article class="video-card reveal reveal-d2">
-          <video class="video-frame" controls poster="assets/images/unsplash-1431540015161-0bf868a2d407.jpg">
-            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-          </video>
-          <div class="video-card-body">
-            <h4>Settlement Success Walkthrough</h4>
-            <p>Preview the first 90 days framework and how each support step reduces friction.</p>
-          </div>
-        </article>
+      <div class="video-carousel slider reveal" data-slider data-autoplay="0" aria-label="Video resources carousel">
+        <div class="slides">
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/hassle-free-canada-journey.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>Your Hassle-Free Canada Journey</h4>
+                <p>A complete overview of the newcomer process from planning through smooth settlement.</p>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/home-final.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>Home Setup Essentials</h4>
+                <p>Learn how to prepare key documents, housing basics, and a stable first-week routine.</p>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/immigration-final.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>Immigration Pathway Guide</h4>
+                <p>Understand immigration routes and how to select the stream that fits your profile.</p>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/pre-arrival-final.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>Pre-Arrival Preparation</h4>
+                <p>Build a practical pre-arrival checklist for finance, travel, and document readiness.</p>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/post-arrival-final.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>Post-Arrival Action Plan</h4>
+                <p>Steps to complete after landing, including banking, healthcare, and local orientation.</p>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/newcomer-mistakes-final.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>Common Newcomer Mistakes</h4>
+                <p>Avoid frequent early mistakes and follow proven decisions for a stronger first year.</p>
+              </div>
+            </div>
+          </article>
+          <article class="slide">
+            <div class="video-slide-card">
+              <video class="video-frame" controls preload="none" data-deferred-video>
+                <source data-src="assets/videos/contact-us-final.mp4" type="video/mp4">
+              </video>
+              <div class="video-card-body">
+                <h4>How We Support You</h4>
+                <p>See how consultations work and how our team supports each stage of your move.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+        <button class="slider-control prev" type="button" aria-label="Previous video">&#10094;</button>
+        <button class="slider-control next" type="button" aria-label="Next video">&#10095;</button>
+        <div class="slider-dots" aria-label="Video slide navigation">
+          <button class="slider-dot active" type="button" aria-label="Go to video 1"></button>
+          <button class="slider-dot" type="button" aria-label="Go to video 2"></button>
+          <button class="slider-dot" type="button" aria-label="Go to video 3"></button>
+          <button class="slider-dot" type="button" aria-label="Go to video 4"></button>
+          <button class="slider-dot" type="button" aria-label="Go to video 5"></button>
+          <button class="slider-dot" type="button" aria-label="Go to video 6"></button>
+          <button class="slider-dot" type="button" aria-label="Go to video 7"></button>
+        </div>
       </div>
     </div>
   </section>
@@ -482,17 +557,49 @@
   <!--  GALLERY  -->
   <section class="section bg-white">
     <div class="container">
-      <div class="section-head reveal">
+      <div class="section-head reveal gallery-head">
         <div class="badge badge-blue">Canada Gallery</div>
         <h2>Picture Your New Life</h2>
         <p>Visual references to help you envision your transition and daily life in Canada.</p>
       </div>
-      <div class="gallery-grid reveal">
-        <div class="gallery-item large"><img src="assets/images/unsplash-1472396961693-142e6e269027.jpg" alt="Niagara Falls in Canada" loading="lazy"></div>
-        <div class="gallery-item medium"><img src="assets/images/unsplash-1503614472-8c93d56e92ce.jpg" alt="Couple enjoying a Canadian city walk" loading="lazy"></div>
-        <div class="gallery-item third"><img src="assets/images/unsplash-1501785888041-af3ef285b470.jpg" alt="Canadian Rockies mountain landscape" loading="lazy"></div>
-        <div class="gallery-item third"><img src="assets/images/unsplash-1467269204594-9661b134dd2b.jpg" alt="Vancouver waterfront city view" loading="lazy"></div>
-        <div class="gallery-item third"><img src="assets/images/unsplash-1469474968028-56623f02e42e.jpg" alt="Scenic Canadian lake and forest" loading="lazy"></div>
+      <div class="gallery-showcase reveal">
+        <article class="gallery-item gallery-feature">
+          <img class="gallery-image-focus-mid" src="assets/images/premium-online/toronto-day.jpg" alt="Toronto waterfront skyline in daytime" loading="lazy">
+          <div class="gallery-caption">
+            <span class="gallery-tag">City Pulse</span>
+            <h3>Live in the Heart of Toronto</h3>
+            <p>Dynamic neighborhoods, world-class transit, and a skyline that feels full of possibility.</p>
+          </div>
+        </article>
+
+        <div class="gallery-rail">
+          <article class="gallery-item gallery-rail-item">
+            <img src="assets/images/premium-online/toronto-night-cn.jpg" alt="Toronto skyline illuminated at night" loading="lazy">
+            <div class="gallery-mini-caption">Evening Energy</div>
+          </article>
+          <article class="gallery-item gallery-rail-item">
+            <img class="gallery-image-focus-top" src="assets/images/premium-online/winter-woman.jpg" alt="Winter life in Canada" loading="lazy">
+            <div class="gallery-mini-caption">Winter Lifestyle</div>
+          </article>
+        </div>
+
+        <div class="gallery-carousel" aria-label="Canadian life highlights">
+          <article class="gallery-item gallery-chip">
+            <img src="assets/images/premium-online/spring-couple-city.jpg" alt="Couple enjoying life in a Canadian city" loading="lazy">
+            <div class="gallery-mini-caption">Spring Streets</div>
+          </article>
+          <article class="gallery-item gallery-chip">
+            <img src="assets/images/premium-online/urban-fountain-woman.jpg" alt="Newcomer lifestyle in downtown Toronto" loading="lazy">
+            <div class="gallery-mini-caption">Downtown Confidence</div>
+          </article>
+          <article class="gallery-item gallery-chip gallery-chip-copy">
+            <div class="gallery-copy-block">
+              <span class="gallery-tag">New Chapter</span>
+              <h4>Designed For Your First 12 Months</h4>
+              <p>From arrival basics to building community, we help you settle with clarity and momentum.</p>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -505,7 +612,7 @@
         <h2>Real Stories, Real Results</h2>
         <p>Families who trusted us with their Canadian journey share their experience.</p>
       </div>
-      <div class="testimonial-grid">
+      <div class="testimonial-grid" data-review-feed data-review-limit="6">
         <div class="testimonial-card reveal">
           <div class="t-stars"><span></span><span></span><span></span><span></span><span></span></div>
           <p class="t-text">"Newcomer Connect was our lifeline. Their pre-arrival checklist was invaluable, and they helped us find a great school for our kids. We felt supported every step of the way."</p>
@@ -556,7 +663,10 @@
         </div>
       </div>
       <div style="text-align:center; margin-top:44px;" class="reveal">
-        <a href="testimonials.html" class="btn btn-outline">View All Testimonials</a>
+        <div class="btn-group" style="justify-content:center;">
+          <a href="testimonials.html" class="btn btn-outline">View All Testimonials</a>
+          <a href="review-submit.html" class="btn btn-primary">Share Your Review</a>
+        </div>
       </div>
     </div>
   </section>
@@ -581,7 +691,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <a href="index.html" class="logo">
-              <img src="assets/icons/logo.svg" alt="NCC">
+              <img src="assets/icons/logo-real.png" alt="NCC">
               Newcomer<span class="logo-highlight">Connect</span>
             </a>
             <p>Your trusted partner for a smooth, stress-free, and successful settlement in Canada  serving newcomers worldwide since 2019.</p>
@@ -634,6 +744,7 @@
     </div>
   </footer>
 
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=20260421-home-logo"></script>
 </body>
 </html>
+
