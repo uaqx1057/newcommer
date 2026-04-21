@@ -1,6 +1,147 @@
 <?php
 header('Content-Type: application/json; charset=UTF-8');
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'site-mailer.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'bookings-lib.php';
+
+function contact_build_admin_email($record, $context) {
+    $subject = nc_build_admin_subject(
+        $record['source_label'] ?? 'Website',
+        $record['submission_category'] ?? 'Contact Inquiry',
+        $record['service_interest'] ?? 'Not specified',
+        $record['full_name'] ?? ''
+    );
+
+    $logoUrl = nc_get_default_email_logo_url();
+    $heroUrl = nc_email_asset_url($context['siteUrl'], 'assets/images/premium-online/toronto-night-cn.jpg');
+
+    $content = '<p style="margin:0 0 18px;font-size:16px;line-height:1.8;color:#21364f;">A new website inquiry has been submitted. The request details are ready for review below.</p>'
+        . '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0;">'
+        . '<tr>'
+        . '<td class="stack-col" width="50%" style="width:50%;padding:0 8px 12px 0;vertical-align:top;">' . nc_render_email_tile('Submission Type', $record['submission_category'] ?? 'Contact Inquiry', '#d8292f') . '</td>'
+        . '<td class="stack-col" width="50%" style="width:50%;padding:0 0 12px 8px;vertical-align:top;">' . nc_render_email_tile('Source', $record['source_label'] ?? 'Website', '#1d6ec5') . '</td>'
+        . '</tr>'
+        . '<tr>'
+        . '<td class="stack-col" width="50%" style="width:50%;padding:0 8px 0 0;vertical-align:top;">' . nc_render_email_tile('Contact Name', $record['full_name'] ?? '', '#0f766e') . '</td>'
+        . '<td class="stack-col" width="50%" style="width:50%;padding:0 0 0 8px;vertical-align:top;">' . nc_render_email_tile('Reference', $record['request_id'] ?? '', '#7c3aed') . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '<div style="height:24px;"></div>'
+        . '<div style="padding:20px 22px;background:#f8fbff;border:1px solid #dbe7f3;border-radius:22px;">'
+        . '<div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#567089;font-weight:700;margin-bottom:14px;">Inquiry Details</div>'
+        . '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;border:1px solid #dbe7f3;border-radius:18px;overflow:hidden;">'
+        . nc_render_email_detail_row('Submitted At', nc_esc_html($record['submitted_at'] ?? ''))
+        . nc_render_email_detail_row('Email Address', '<a href="mailto:' . nc_esc_html($record['email'] ?? '') . '" style="color:#1d6ec5;text-decoration:none;font-weight:700;">' . nc_esc_html($record['email'] ?? '') . '</a>')
+        . nc_render_email_detail_row('Phone Number', nc_esc_html($record['phone'] ?? 'Not provided'))
+        . nc_render_email_detail_row('Page Title', nc_esc_html($record['page_title'] ?? 'Website'))
+        . nc_render_email_detail_row('Page URL', '<a href="' . nc_esc_html($record['page_url'] ?? $context['siteUrl']) . '" style="color:#1d6ec5;text-decoration:none;word-break:break-all;">' . nc_esc_html($record['page_url'] ?? $context['siteUrl']) . '</a>')
+        . nc_render_email_detail_row('Message', '<div style="font-size:14px;line-height:1.8;color:#1f2937;">' . nl2br(nc_esc_html($record['message'] ?? '')) . '</div>')
+        . '</table>'
+        . '</div>'
+        . '<div style="height:22px;"></div>'
+        . '<div style="padding:22px;background:#0f3150;border-radius:22px;">'
+        . '<div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#bfdcff;font-weight:700;margin-bottom:14px;">Quick Actions</div>'
+        . '<table role="presentation" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0 12px;">'
+        . '<tr><td>' . nc_render_email_button('Reply to Contact', 'mailto:' . ($record['email'] ?? ''), '#d8292f') . '</td></tr>'
+        . (!empty($record['phone_link']) ? '<tr><td>' . nc_render_email_button('Call Contact', 'tel:' . $record['phone_link'], '#1d6ec5') . '</td></tr>' : '')
+        . '</table>'
+        . '</div>';
+
+    return [
+        'subject' => $subject,
+        'html' => nc_render_branded_email_shell([
+            'title' => $subject,
+            'preheader' => 'A new website inquiry is ready for admin review.',
+            'eyebrow' => 'Admin Lead Alert',
+            'heading' => 'A new contact inquiry has arrived.',
+            'subheading' => 'This message came through the website and is ready for a fast admin response.',
+            'hero_image_url' => $heroUrl,
+            'hero_image_alt' => 'Toronto skyline for Newcomer Connect admin email',
+            'logo_url' => $logoUrl,
+            'content_html' => $content,
+            'footer_html' => ''
+        ])
+    ];
+}
+
+function contact_build_customer_email($record, $context) {
+    $subject = nc_build_customer_subject($record['submission_category'] ?? 'request');
+
+    $logoUrl = nc_get_default_email_logo_url();
+    $heroUrl = nc_email_asset_url($context['siteUrl'], 'assets/images/premium-online/toronto-day.jpg');
+
+    $content = '<p style="margin:0 0 18px;font-size:16px;line-height:1.8;color:#21364f;">Thank you, ' . nc_esc_html($record['first_name'] ?? '') . '. Your message has reached our admin team successfully.</p>'
+        . '<p style="margin:0 0 20px;font-size:15px;line-height:1.8;color:#42566c;">We will review your inquiry and reply as soon as possible, usually within one business day.</p>'
+        . '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0;">'
+        . '<tr>'
+        . '<td class="stack-col" width="50%" style="width:50%;padding:0 8px 12px 0;vertical-align:top;">' . nc_render_email_tile('Request Type', $record['submission_category'] ?? 'Contact Inquiry', '#d8292f') . '</td>'
+        . '<td class="stack-col" width="50%" style="width:50%;padding:0 0 12px 8px;vertical-align:top;">' . nc_render_email_tile('Reference', $record['request_id'] ?? '', '#1d6ec5') . '</td>'
+        . '</tr>'
+        . '</table>'
+        . '<div style="height:24px;"></div>'
+        . '<div style="padding:22px;background:linear-gradient(180deg,#f8fbff 0%,#ffffff 100%);border:1px solid #dbe7f3;border-radius:22px;">'
+        . '<div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#567089;font-weight:700;margin-bottom:14px;">Your Message Summary</div>'
+        . '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;border:1px solid #dbe7f3;border-radius:18px;overflow:hidden;">'
+        . nc_render_email_detail_row('Submitted At', nc_esc_html($record['submitted_at'] ?? ''))
+        . nc_render_email_detail_row('Email Address', '<a href="mailto:' . nc_esc_html($record['email'] ?? '') . '" style="color:#1d6ec5;text-decoration:none;font-weight:700;">' . nc_esc_html($record['email'] ?? '') . '</a>')
+        . nc_render_email_detail_row('Phone Number', nc_esc_html($record['phone'] ?? 'Not provided'))
+        . nc_render_email_detail_row('Message', '<div style="font-size:14px;line-height:1.8;color:#1f2937;">' . nl2br(nc_esc_html($record['message'] ?? '')) . '</div>')
+        . '</table>'
+        . '</div>'
+        . '<div style="height:22px;"></div>'
+        . '<div style="padding:22px;background:#0f3150;border-radius:22px;">'
+        . '<div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#bfdcff;font-weight:700;margin-bottom:14px;">Helpful Links</div>'
+        . '<table role="presentation" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0 12px;">'
+        . '<tr><td>' . nc_render_email_button('Explore Services', rtrim($context['siteUrl'], '/') . '/services.html', '#d8292f') . '</td></tr>'
+        . '<tr><td>' . nc_render_email_button('Read FAQs', rtrim($context['siteUrl'], '/') . '/faq.html', '#1d6ec5') . '</td></tr>'
+        . '</table>'
+        . '</div>';
+
+    return [
+        'subject' => $subject,
+        'html' => nc_render_branded_email_shell([
+            'title' => $subject,
+            'preheader' => 'Your message has been received by Newcomer Connect.',
+            'eyebrow' => 'Contact Confirmation',
+            'heading' => 'Your message is with our admin team.',
+            'subheading' => 'We have received your inquiry and will respond with the next best steps as quickly as possible.',
+            'hero_image_url' => $heroUrl,
+            'hero_image_alt' => 'Canada skyline for confirmation email',
+            'logo_url' => $logoUrl,
+            'content_html' => $content,
+            'footer_html' => ''
+        ])
+    ];
+}
+
+function respond_for_dual_mail_result($adminResult, $customerResult, $successMessage, $partialMessage, $failureMessage, $httpFailureCode = 500) {
+    $adminSent = !empty($adminResult['sent']);
+    $customerSent = !empty($customerResult['sent']);
+
+    if ($adminSent && $customerSent) {
+        echo json_encode([
+            'success' => true,
+            'message' => $successMessage
+        ]);
+        exit;
+    }
+
+    if ($adminSent || $customerSent) {
+        echo json_encode([
+            'success' => true,
+            'message' => $partialMessage
+        ]);
+        exit;
+    }
+
+    http_response_code($httpFailureCode);
+    echo json_encode([
+        'success' => false,
+        'message' => $failureMessage
+    ]);
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode([
@@ -10,179 +151,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-function clean_input($value) {
-    $value = is_string($value) ? trim($value) : '';
-    $value = strip_tags($value);
-    return $value;
-}
-
-function esc_html($value) {
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
-
-function get_env_value($key, $default = '') {
-  $value = getenv($key);
-  if ($value === false || trim((string)$value) === '') {
-    if (isset($_ENV[$key]) && trim((string)$_ENV[$key]) !== '') {
-      $value = $_ENV[$key];
-    } elseif (isset($_SERVER[$key]) && trim((string)$_SERVER[$key]) !== '') {
-      $value = $_SERVER[$key];
-    } else {
-      return $default;
-    }
-  }
-  $value = trim((string)$value);
-  return $value === '' ? $default : $value;
-}
-
-function load_local_smtp_config() {
-  $configPath = __DIR__ . DIRECTORY_SEPARATOR . 'smtp-config.php';
-  if (!is_file($configPath)) {
-    return [];
-  }
-
-  $data = include $configPath;
-  return is_array($data) ? $data : [];
-}
-
-function append_mail_log($requestId, $payload) {
-  $logFile = __DIR__ . DIRECTORY_SEPARATOR . 'mail-debug.log';
-  $line = '[' . date('Y-m-d H:i:s') . '] request=' . $requestId . ' ' . json_encode($payload, JSON_UNESCAPED_SLASHES) . PHP_EOL;
-  @file_put_contents($logFile, $line, FILE_APPEND);
-}
-
-function smtp_read_response($socket) {
-  $response = '';
-  while (($line = fgets($socket, 515)) !== false) {
-    $response .= $line;
-    if (preg_match('/^\d{3}\s/', $line)) {
-      break;
-    }
-  }
-  return trim($response);
-}
-
-function smtp_response_matches($response, $expectedCodes) {
-  foreach ($expectedCodes as $code) {
-    if (substr($response, 0, 3) === (string)$code) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function smtp_send_command($socket, $command, $expectedCodes, &$lastError) {
-  if ($command !== null) {
-    fwrite($socket, $command . "\r\n");
-  }
-
-  $response = smtp_read_response($socket);
-  if (!smtp_response_matches($response, $expectedCodes)) {
-    $lastError = 'SMTP error after command [' . ($command ?? 'CONNECT') . ']: ' . $response;
-    return false;
-  }
-  return true;
-}
-
-function send_html_email($smtpConfig, $to, $subject, $htmlBody, $replyToEmail) {
-  $to = trim((string)$to);
-  if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
-    return ['sent' => false, 'error' => 'Invalid recipient email address.'];
-  }
-
-  $host = $smtpConfig['host'];
-  $port = (int)$smtpConfig['port'];
-  $encryption = strtolower($smtpConfig['encryption']);
-  $username = $smtpConfig['username'];
-  $password = $smtpConfig['password'];
-  $fromEmail = $smtpConfig['from_email'];
-  $fromName = $smtpConfig['from_name'];
-  $heloHost = $smtpConfig['helo_host'];
-
-  $remoteHost = $encryption === 'ssl' ? ('ssl://' . $host) : $host;
-  $errno = 0;
-  $errstr = '';
-  $socket = @fsockopen($remoteHost, $port, $errno, $errstr, 20);
-  if (!$socket) {
-    return ['sent' => false, 'error' => 'SMTP connect failed: ' . $errstr . ' (' . $errno . ')'];
-  }
-
-  stream_set_timeout($socket, 20);
-  $lastError = null;
-
-  if (!smtp_send_command($socket, null, [220], $lastError)) {
-    fclose($socket);
-    return ['sent' => false, 'error' => $lastError];
-  }
-
-  if (!smtp_send_command($socket, 'EHLO ' . $heloHost, [250], $lastError)) {
-    fclose($socket);
-    return ['sent' => false, 'error' => $lastError];
-  }
-
-  if ($encryption === 'tls') {
-    if (!smtp_send_command($socket, 'STARTTLS', [220], $lastError)) {
-      fclose($socket);
-      return ['sent' => false, 'error' => $lastError];
-    }
-
-    $tlsEnabled = @stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
-    if ($tlsEnabled !== true) {
-      fclose($socket);
-      return ['sent' => false, 'error' => 'Failed to enable TLS encryption.'];
-    }
-
-    if (!smtp_send_command($socket, 'EHLO ' . $heloHost, [250], $lastError)) {
-      fclose($socket);
-      return ['sent' => false, 'error' => $lastError];
-    }
-  }
-
-  if ($username !== '' || $password !== '') {
-    if (!smtp_send_command($socket, 'AUTH LOGIN', [334], $lastError)
-      || !smtp_send_command($socket, base64_encode($username), [334], $lastError)
-      || !smtp_send_command($socket, base64_encode($password), [235], $lastError)) {
-      fclose($socket);
-      return ['sent' => false, 'error' => $lastError];
-    }
-  }
-
-  if (!smtp_send_command($socket, 'MAIL FROM:<' . $fromEmail . '>', [250], $lastError)
-    || !smtp_send_command($socket, 'RCPT TO:<' . $to . '>', [250, 251], $lastError)
-    || !smtp_send_command($socket, 'DATA', [354], $lastError)) {
-    fclose($socket);
-    return ['sent' => false, 'error' => $lastError];
-  }
-
-  $headers = [
-    'Date: ' . date(DATE_RFC2822),
-    'From: ' . $fromName . ' <' . $fromEmail . '>',
-    'To: <' . $to . '>',
-    'Subject: =?UTF-8?B?' . base64_encode($subject) . '?=',
-    'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    'Reply-To: ' . $replyToEmail,
-    'X-Mailer: NewcomerConnectSMTP'
-  ];
-
-  $rawMessage = implode("\r\n", $headers) . "\r\n\r\n" . $htmlBody;
-  $rawMessage = str_replace("\r\n.", "\r\n..", $rawMessage);
-  fwrite($socket, $rawMessage . "\r\n.\r\n");
-
-  $dataResponse = smtp_read_response($socket);
-  if (!smtp_response_matches($dataResponse, [250])) {
-    fclose($socket);
-    return ['sent' => false, 'error' => 'SMTP DATA failed: ' . $dataResponse];
-  }
-
-  smtp_send_command($socket, 'QUIT', [221], $lastError);
-  fclose($socket);
-
-  return ['sent' => true, 'error' => null];
-}
-
-// Honeypot field.
 if (!empty($_POST['website'])) {
     echo json_encode([
         'success' => true,
@@ -191,12 +159,120 @@ if (!empty($_POST['website'])) {
     exit;
 }
 
-$firstName = clean_input($_POST['first_name'] ?? '');
-$lastName = clean_input($_POST['last_name'] ?? '');
-$email = clean_input($_POST['email'] ?? '');
-$phone = clean_input($_POST['phone'] ?? '');
-$serviceInterest = clean_input($_POST['service_interest'] ?? '');
-$message = trim($_POST['message'] ?? '');
+$smtpConfig = nc_get_smtp_config();
+$missingConfig = nc_validate_smtp_config($smtpConfig);
+if (!empty($missingConfig)) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'SMTP is not configured. Missing: ' . implode(', ', $missingConfig) . '. Add these as server env vars or in smtp-config.php.'
+    ]);
+    exit;
+}
+
+$adminEmail = nc_get_env_value('ADMIN_EMAIL', 'humatahir1@gmail.com');
+if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Admin email is invalid. Set a valid ADMIN_EMAIL on the server.'
+    ]);
+    exit;
+}
+
+$supportEmail = nc_get_env_value('SUPPORT_EMAIL', 'info@codewithusman.com');
+if (!filter_var($supportEmail, FILTER_VALIDATE_EMAIL)) {
+    $supportEmail = (string) ($smtpConfig['from_email'] ?? 'info@codewithusman.com');
+}
+
+$siteUrl = nc_normalize_public_url(nc_get_env_value('SITE_URL', 'https://newcomerconnect.ca'), 'https://newcomerconnect.ca');
+
+$submissionType = nc_clean_input($_POST['submission_type'] ?? 'contact_inquiry');
+$submissionLabel = nc_clean_input($_POST['submission_label'] ?? '');
+$submissionSource = nc_clean_input($_POST['submission_source'] ?? '');
+$submissionSourceLabel = nc_clean_input($_POST['submission_source_label'] ?? '');
+$pageTitle = nc_clean_input($_POST['page_title'] ?? '');
+$pageUrl = trim((string) ($_POST['page_url'] ?? ''));
+$referrer = trim((string) ($_SERVER['HTTP_REFERER'] ?? ''));
+
+if (!filter_var($pageUrl, FILTER_VALIDATE_URL)) {
+    $pageUrl = filter_var($referrer, FILTER_VALIDATE_URL) ? $referrer : ($siteUrl . '/contact.html');
+}
+
+$pageTitle = $pageTitle !== '' ? $pageTitle : 'Contact Page';
+$submissionSourceLabel = nc_build_submission_source_label($submissionSourceLabel, $pageTitle, $submissionSource);
+
+if ($submissionType === 'consultation_booking') {
+    $bookingBuild = bookings_build_record_from_post($_POST, [
+        'source_label' => $submissionSourceLabel,
+        'page_title' => $pageTitle,
+        'page_url' => $pageUrl,
+        'submission_label' => $submissionLabel !== '' ? $submissionLabel : 'Consultation Booking Request'
+    ]);
+
+    if (!empty($bookingBuild['errors'])) {
+        http_response_code(422);
+        echo json_encode([
+            'success' => false,
+            'message' => implode(' ', $bookingBuild['errors'])
+        ]);
+        exit;
+    }
+
+    $bookingRecord = $bookingBuild['record'];
+    $records = bookings_load_all();
+    $records[] = $bookingRecord;
+    if (!bookings_write_all($records)) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Could not save your booking right now. Please try again shortly.'
+        ]);
+        exit;
+    }
+
+    $adminMail = bookings_build_admin_request_email($bookingRecord, [
+        'siteUrl' => $siteUrl,
+        'adminEmail' => $adminEmail,
+        'supportEmail' => $supportEmail
+    ]);
+    $customerMail = bookings_build_customer_request_email($bookingRecord, [
+        'siteUrl' => $siteUrl,
+        'supportEmail' => $supportEmail
+    ]);
+
+    $adminResult = nc_send_html_email($smtpConfig, $adminEmail, $adminMail['subject'], $adminMail['html'], $bookingRecord['email']);
+    $customerResult = nc_send_html_email($smtpConfig, $bookingRecord['email'], $customerMail['subject'], $customerMail['html'], $adminEmail);
+
+    nc_append_mail_log($bookingRecord['id'], [
+        'kind' => 'booking-request',
+        'booking_id' => $bookingRecord['id'],
+        'admin_to' => $adminEmail,
+        'customer_to' => $bookingRecord['email'],
+        'admin_sent' => $adminResult['sent'],
+        'customer_sent' => $customerResult['sent'],
+        'admin_error' => $adminResult['error'],
+        'customer_error' => $customerResult['error'],
+        'smtp_host' => $smtpConfig['host'],
+        'smtp_port' => $smtpConfig['port'],
+        'smtp_encryption' => $smtpConfig['encryption']
+    ]);
+
+    respond_for_dual_mail_result(
+        $adminResult,
+        $customerResult,
+        'Thank you! Your consultation request has been added to our booking queue and confirmation emails have been sent.',
+        'Your consultation request has been saved in our admin booking queue. Some email notifications could not be delivered right now, but your booking is recorded.',
+        'Sorry, we could not send your booking notifications right now. Please contact ' . $supportEmail . ' and mention booking id ' . $bookingRecord['id'] . '.'
+    );
+}
+
+$firstName = nc_clean_input($_POST['first_name'] ?? '');
+$lastName = nc_clean_input($_POST['last_name'] ?? '');
+$email = nc_clean_input($_POST['email'] ?? '');
+$phone = nc_clean_input($_POST['phone'] ?? '');
+$message = trim((string) ($_POST['message'] ?? ''));
+$serviceInterest = nc_clean_input($_POST['service_interest'] ?? '');
 
 if ($firstName === '' || $lastName === '' || $email === '' || trim($message) === '') {
     http_response_code(422);
@@ -216,232 +292,62 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$adminEmail = get_env_value('ADMIN_EMAIL', 'uaqx1057@gmail.com');
-$supportEmail = get_env_value('SUPPORT_EMAIL', 'info@codewithusman.com');
-$siteUrl = 'https://newcomerconnect.ca';
-$fullName = trim($firstName . ' ' . $lastName);
-$submittedAt = date('F j, Y \a\t g:i A');
 $serviceInterest = $serviceInterest !== '' ? $serviceInterest : 'Not specified';
-$phone = $phone !== '' ? $phone : 'Not provided';
-
-$safeFullName = esc_html($fullName);
-$safeFirstName = esc_html($firstName);
-$safeEmail = esc_html($email);
-$safePhone = esc_html($phone);
-$safeService = esc_html($serviceInterest);
-$safeSubmittedAt = esc_html($submittedAt);
-$safeMessage = nl2br(esc_html($message));
-
-$adminSubject = 'New Consultation Request | Newcomer Connect';
-$customerSubject = 'We Received Your Request | Newcomer Connect';
-$fileSmtpConfig = load_local_smtp_config();
-
-$smtpConfig = [
-  'host' => get_env_value('SMTP_HOST', $fileSmtpConfig['host'] ?? 'codewithusman.com'),
-  'port' => (int)get_env_value('SMTP_PORT', (string)($fileSmtpConfig['port'] ?? '465')),
-  'encryption' => strtolower(get_env_value('SMTP_ENCRYPTION', $fileSmtpConfig['encryption'] ?? 'ssl')),
-  'username' => get_env_value('SMTP_USERNAME', $fileSmtpConfig['username'] ?? 'info@codewithusman.com'),
-  'password' => get_env_value('SMTP_PASSWORD', $fileSmtpConfig['password'] ?? ''),
-  'from_email' => get_env_value('MAIL_FROM_EMAIL', $fileSmtpConfig['from_email'] ?? 'info@codewithusman.com'),
-  'from_name' => get_env_value('MAIL_FROM_NAME', $fileSmtpConfig['from_name'] ?? 'Newcomer Connect'),
-  'helo_host' => get_env_value('SMTP_HELO_HOST', $fileSmtpConfig['helo_host'] ?? 'codewithusman.com')
-];
-
-$missingConfig = [];
-if ($smtpConfig['host'] === '') {
-  $missingConfig[] = 'SMTP_HOST';
-}
-if ($smtpConfig['port'] <= 0) {
-  $missingConfig[] = 'SMTP_PORT';
-}
-if ($smtpConfig['from_email'] === '') {
-  $missingConfig[] = 'MAIL_FROM_EMAIL';
-}
-if ($smtpConfig['username'] === '') {
-  $missingConfig[] = 'SMTP_USERNAME';
-}
-if ($smtpConfig['password'] === '') {
-  $missingConfig[] = 'SMTP_PASSWORD';
-}
-
-if (!empty($missingConfig)) {
-  http_response_code(500);
-  echo json_encode([
-    'success' => false,
-    'message' => 'SMTP is not configured. Missing: ' . implode(', ', $missingConfig) . '. Add these as server env vars or in smtp-config.php.'
-  ]);
-  exit;
-}
-
-if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
-  http_response_code(500);
-  echo json_encode([
-    'success' => false,
-    'message' => 'Admin email is invalid. Set a valid ADMIN_EMAIL on the server.'
-  ]);
-  exit;
-}
-
-$safeSupportEmail = esc_html($supportEmail);
+$submissionCategory = nc_build_submission_category($submissionType, $submissionLabel, $serviceInterest);
 
 try {
-  $requestId = date('YmdHis') . '-' . bin2hex(random_bytes(3));
-} catch (Exception $e) {
-  $requestId = date('YmdHis') . '-' . uniqid();
+    $requestId = date('YmdHis') . '-' . bin2hex(random_bytes(3));
+} catch (Exception $error) {
+    $requestId = date('YmdHis') . '-' . uniqid();
 }
 
-$adminBody = '
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Consultation Request</title>
-</head>
-<body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,sans-serif;color:#1f2937;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f4f7fb;padding:24px 0;">
-    <tr>
-      <td align="center">
-        <table role="presentation" width="680" cellspacing="0" cellpadding="0" style="max-width:680px;background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;">
-          <tr>
-            <td style="background:linear-gradient(135deg,#d8292f,#1d6ec5);padding:22px 28px;color:#ffffff;">
-              <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.9;">New Website Lead</p>
-              <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;">Consultation Request Submitted</h1>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:24px 28px 10px;">
-              <p style="margin:0 0 14px;font-size:15px;line-height:1.7;">A new inquiry has been submitted on the Newcomer Connect website. Full details are below.</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:0 28px 8px;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
-                <tr><td style="padding:11px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;width:34%;">Submitted At</td><td style="padding:11px 14px;border-bottom:1px solid #e5e7eb;">' . $safeSubmittedAt . '</td></tr>
-                <tr><td style="padding:11px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;">Full Name</td><td style="padding:11px 14px;border-bottom:1px solid #e5e7eb;">' . $safeFullName . '</td></tr>
-                <tr><td style="padding:11px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;">Email</td><td style="padding:11px 14px;border-bottom:1px solid #e5e7eb;"><a href="mailto:' . $safeEmail . '" style="color:#1d6ec5;text-decoration:none;">' . $safeEmail . '</a></td></tr>
-                <tr><td style="padding:11px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;">Phone</td><td style="padding:11px 14px;border-bottom:1px solid #e5e7eb;">' . $safePhone . '</td></tr>
-                <tr><td style="padding:11px 14px;background:#f9fafb;border-bottom:1px solid #e5e7eb;font-weight:700;">Service Interest</td><td style="padding:11px 14px;border-bottom:1px solid #e5e7eb;">' . $safeService . '</td></tr>
-                <tr><td style="padding:11px 14px;background:#f9fafb;font-weight:700;vertical-align:top;">Message</td><td style="padding:11px 14px;line-height:1.6;">' . $safeMessage . '</td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:18px 28px 28px;">
-              <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.6;">Customer contact quick actions: <a href="mailto:' . $safeEmail . '" style="color:#1d6ec5;text-decoration:none;">Email customer</a> | <a href="tel:' . esc_html(preg_replace('/[^0-9\+]/', '', $phone)) . '" style="color:#1d6ec5;text-decoration:none;">Call customer</a></p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>';
+$contactRecord = [
+    'request_id' => $requestId,
+    'first_name' => $firstName,
+    'last_name' => $lastName,
+    'full_name' => trim($firstName . ' ' . $lastName),
+    'email' => $email,
+    'phone' => $phone !== '' ? $phone : 'Not provided',
+    'phone_link' => $phone !== '' ? nc_format_phone_href($phone) : '',
+    'service_interest' => $serviceInterest,
+    'message' => $message,
+    'submitted_at' => date('F j, Y \a\t g:i A'),
+    'submission_category' => $submissionCategory,
+    'source_label' => $submissionSourceLabel,
+    'page_title' => $pageTitle,
+    'page_url' => $pageUrl
+];
 
-$customerBody = '
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You from Newcomer Connect</title>
-</head>
-<body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,sans-serif;color:#1f2937;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f4f7fb;padding:24px 0;">
-    <tr>
-      <td align="center">
-        <table role="presentation" width="680" cellspacing="0" cellpadding="0" style="max-width:680px;background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;">
-          <tr>
-            <td style="background:linear-gradient(135deg,#d8292f,#1d6ec5);padding:22px 28px;color:#ffffff;">
-              <p style="margin:0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.9;">Newcomer Connect</p>
-              <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;">Thank You, ' . $safeFirstName . '.</h1>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:24px 28px 10px;">
-              <p style="margin:0 0 12px;font-size:15px;line-height:1.7;">We have received your consultation request and shared it with our admin team. You can expect a response within one business day.</p>
-              <p style="margin:0;font-size:15px;line-height:1.7;">Our support covers every stage of the journey:</p>
-              <ul style="margin:12px 0 0;padding-left:20px;color:#374151;line-height:1.8;">
-                <li>Pre-Arrival planning and documentation guidance</li>
-                <li>Post-Arrival settlement support</li>
-                <li>Immigration and legal service direction</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:18px 28px;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0 10px;">
-                <tr>
-                  <td><a href="' . $siteUrl . '/services.html" style="display:inline-block;padding:11px 16px;background:#d8292f;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">Explore Services</a></td>
-                </tr>
-                <tr>
-                  <td><a href="' . $siteUrl . '/faq.html" style="display:inline-block;padding:11px 16px;background:#1d6ec5;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">Read FAQ</a></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:6px 28px 28px;">
-              <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;">Need urgent help? Contact us directly:</p>
-              <p style="margin:0;font-size:14px;line-height:1.8;color:#374151;">
-                Email: <a href="mailto:' . $safeSupportEmail . '" style="color:#1d6ec5;text-decoration:none;">' . $safeSupportEmail . '</a><br>
-                Canada: <a href="tel:+12893000321" style="color:#1d6ec5;text-decoration:none;">+1-289-300-0321</a><br>
-                Pakistan: <a href="tel:+923370222232" style="color:#1d6ec5;text-decoration:none;">+92-337-022-2232</a>
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>';
-
-$adminResult = send_html_email($smtpConfig, $adminEmail, $adminSubject, $adminBody, $email);
-$customerResult = send_html_email($smtpConfig, $email, $customerSubject, $customerBody, $adminEmail);
-
-append_mail_log($requestId, [
-  'admin_to' => $adminEmail,
-  'customer_to' => $email,
-  'admin_sent' => $adminResult['sent'],
-  'customer_sent' => $customerResult['sent'],
-  'admin_error' => $adminResult['error'],
-  'customer_error' => $customerResult['error'],
-  'smtp_host' => $smtpConfig['host'],
-  'smtp_port' => $smtpConfig['port'],
-  'smtp_encryption' => $smtpConfig['encryption']
+$adminMail = contact_build_admin_email($contactRecord, [
+    'siteUrl' => $siteUrl,
+    'adminEmail' => $adminEmail,
+    'supportEmail' => $supportEmail
+]);
+$customerMail = contact_build_customer_email($contactRecord, [
+    'siteUrl' => $siteUrl,
+    'supportEmail' => $supportEmail
 ]);
 
-$adminSent = $adminResult['sent'];
-$customerSent = $customerResult['sent'];
+$adminResult = nc_send_html_email($smtpConfig, $adminEmail, $adminMail['subject'], $adminMail['html'], $email);
+$customerResult = nc_send_html_email($smtpConfig, $email, $customerMail['subject'], $customerMail['html'], $adminEmail);
 
-if ($adminSent && $customerSent) {
-    echo json_encode([
-        'success' => true,
-        'message' => 'Thank you! Your request has been sent to our admin team and a confirmation email has been sent to you.'
-    ]);
-    exit;
-}
-
-if ($adminSent && !$customerSent) {
-    echo json_encode([
-        'success' => true,
-    'message' => 'Thank you! Your request reached our admin team. Confirmation email to your inbox could not be delivered this time.'
-    ]);
-    exit;
-}
-
-if (!$adminSent && $customerSent) {
-  http_response_code(500);
-  echo json_encode([
-    'success' => false,
-    'message' => 'We could not deliver your request to our admin inbox right now. Please email ' . $supportEmail . ' directly and mention reference ' . $requestId . '.'
-  ]);
-  exit;
-}
-
-http_response_code(500);
-echo json_encode([
-    'success' => false,
-  'message' => 'Sorry, we could not send your request emails right now. Please email ' . $supportEmail . ' and mention reference ' . $requestId . '.'
+nc_append_mail_log($requestId, [
+    'kind' => 'contact-inquiry',
+    'admin_to' => $adminEmail,
+    'customer_to' => $email,
+    'admin_sent' => $adminResult['sent'],
+    'customer_sent' => $customerResult['sent'],
+    'admin_error' => $adminResult['error'],
+    'customer_error' => $customerResult['error'],
+    'smtp_host' => $smtpConfig['host'],
+    'smtp_port' => $smtpConfig['port'],
+    'smtp_encryption' => $smtpConfig['encryption']
 ]);
+
+respond_for_dual_mail_result(
+    $adminResult,
+    $customerResult,
+    'Thank you! Your request has been sent to our admin team and a confirmation email has been sent to you.',
+    'Thank you! Your request reached our admin workflow. One of the confirmation emails could not be delivered this time, but your inquiry was still received.',
+    'Sorry, we could not send your request emails right now. Please email ' . $supportEmail . ' and mention reference ' . $requestId . '.'
+);

@@ -121,82 +121,190 @@
     <div class="container">
       <div class="contact-grid">
         <div class="contact-info reveal">
-          <div class="badge badge-blue" style="margin-bottom:20px;">Reach Out</div>
-          <h3>We are Here to Help</h3>
-          <p>Whether you are just beginning to explore options or ready to take the next step, our team provides honest, personalised guidance with no pressure.</p>
+          <div class="contact-eyebrow">Contact Desk</div>
+          <h3>Speak with the right team, in the right format.</h3>
+          <p>Use the consultation request for case-specific planning, timelines, and service review. Use the direct message form for straightforward questions or a quick callback request.</p>
+          <div class="contact-summary-card">
+            <div>
+              <strong>Consultation bookings</strong>
+              <span>Structured intake for new clients, planning calls, and time-sensitive cases.</span>
+            </div>
+            <div>
+              <strong>Direct messages</strong>
+              <span>Best for simple questions, general guidance, and quick follow-up requests.</span>
+            </div>
+          </div>
           <div class="contact-detail">
-            <div class="cdl-icon">&#128231;</div>
+            <div class="cdl-icon">EM</div>
             <div class="cdl-body"><strong>Email</strong><a href="mailto:info@newcomerconnect.ca">info@newcomerconnect.ca</a></div>
           </div>
           <div class="contact-detail">
-            <div class="cdl-icon">&#128222;</div>
+            <div class="cdl-icon">CA</div>
             <div class="cdl-body"><strong>Phone (Canada)</strong><a href="tel:+12893000321">+1-289-300-0321</a></div>
           </div>
           <div class="contact-detail">
-            <div class="cdl-icon">&#128222;</div>
+            <div class="cdl-icon">PK</div>
             <div class="cdl-body"><strong>Phone (Pakistan)</strong><a href="tel:+923370222232">+92-337-022-2232</a></div>
           </div>
           <div class="contact-detail">
-            <div class="cdl-icon">&#128205;</div>
+            <div class="cdl-icon">ON</div>
             <div class="cdl-body"><strong>Canada Office</strong><span>50 Steeles Ave East, Unit 209, Milton, Ontario, L9T 4W9, Canada</span></div>
           </div>
           <div class="contact-detail">
-            <div class="cdl-icon">&#128205;</div>
+            <div class="cdl-icon">ISB</div>
             <div class="cdl-body"><strong>Pakistan Office</strong><span>Suite#35, Moti Bazar Mall, Safari Villas 1, Bahria town, Rawalpindi, Pakistan</span></div>
           </div>
           <div class="contact-detail">
-            <div class="cdl-icon">&#127757;</div>
-            <div class="cdl-body"><strong>Virtual Services</strong><span>Available Worldwide  All Time Zones</span></div>
+            <div class="cdl-icon">GL</div>
+            <div class="cdl-body"><strong>Virtual Services</strong><span>Available worldwide across time zones.</span></div>
           </div>
         </div>
 
-        <div class="form-card reveal reveal-d2" id="assessment">
-          <h3>Book Your Free Consultation</h3>
-          <p>Tell us about your goals and we will prepare a personalised plan for your first session.</p>
-          <form id="contactForm" action="contact-submit.php" method="POST">
-            <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <input type="hidden" name="submission_type" value="consultation_booking">
-            <input type="hidden" name="submission_label" value="Free Consultation Booking">
-            <input type="hidden" name="submission_source_label" value="Contact Page">
-            <div class="grid-2" style="gap:16px;">
-              <div class="form-group">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" name="first_name" placeholder="John" autocomplete="given-name" required>
+        <div class="contact-form-stack reveal reveal-d2" id="assessment">
+          <div class="contact-forms-shell">
+            <div class="contact-forms-head">
+              <div>
+                <div class="contact-eyebrow">Client Intake</div>
+                <h3>Choose the right way to contact us.</h3>
+                <p>Select the format that matches your need. Consultation requests remain the primary path for new clients.</p>
               </div>
-              <div class="form-group">
-                <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="last_name" placeholder="Smith" autocomplete="family-name" required>
+              <div class="contact-form-switch" role="tablist" aria-label="Contact form type selector">
+                <button type="button" class="contact-switch-btn is-active" data-contact-panel-trigger="booking" role="tab" aria-selected="true">Consultation Request</button>
+                <button type="button" class="contact-switch-btn" data-contact-panel-trigger="message" role="tab" aria-selected="false">Direct Message</button>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="email" placeholder="john@example.com" autocomplete="email" required>
+
+            <section class="contact-panel is-active" data-contact-panel="booking" role="tabpanel">
+              <div class="contact-panel-intro">
+                <strong>Consultation Request</strong>
+                <span>Structured intake for case review, scheduling, and urgent matters.</span>
+              </div>
+              <form id="bookingForm" class="async-contact-form" data-async-contact-form data-submit-label="Request Consultation" data-success-target="#bookingFormSuccess" data-error-target="#bookingFormError" action="contact-submit.php" method="POST">
+              <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <input type="hidden" name="submission_type" value="consultation_booking">
+              <input type="hidden" name="submission_label" value="Consultation Booking Request">
+              <input type="hidden" name="submission_source_label" value="Contact Page Booking">
+              <input type="hidden" name="browser_timezone" value="">
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-control" name="first_name" placeholder="John" autocomplete="given-name" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control" name="last_name" placeholder="Smith" autocomplete="family-name" required>
+                </div>
+              </div>
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control" name="email" placeholder="john@example.com" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" name="phone" placeholder="+1-289-300-0321 / +92-337-022-2232" autocomplete="tel" required>
+                </div>
+              </div>
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group">
+                  <label class="form-label">Service Interest</label>
+                  <select class="form-control" name="service_interest" required>
+                    <option value="">Select a service</option>
+                    <option>Pre-Arrival Services</option>
+                    <option>Post-Arrival Services</option>
+                    <option>Immigration &amp; Legal Services</option>
+                    <option>General Consultation</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Urgency</label>
+                  <select class="form-control" name="urgency" required>
+                    <option value="">Select priority</option>
+                    <option value="standard">Standard - response within 1 business day</option>
+                    <option value="priority">Priority - guidance needed within 72 hours</option>
+                    <option value="urgent">Urgent - time-sensitive case</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-3 booking-time-grid">
+                <div class="form-group">
+                  <label class="form-label">Preferred Date</label>
+                  <input type="date" class="form-control" name="preferred_date" data-booking-date required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Preferred Time</label>
+                  <input type="time" class="form-control" name="preferred_time" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Time Zone</label>
+                  <select class="form-control" name="timezone" required>
+                    <option value="browser">Use my device time zone</option>
+                    <option value="America/Toronto">Canada Eastern Time</option>
+                    <option value="America/Vancouver">Canada Pacific Time</option>
+                    <option value="Asia/Karachi">Pakistan Standard Time</option>
+                    <option value="UTC">UTC</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Consultation Notes</label>
+                <textarea class="form-control" name="message" placeholder="Share your goals, deadlines, case stage, or anything our admin team should know before the consultation." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Request Consultation &#8594;</button>
+              </form>
+              <div class="booking-form-note">Choose a preferred slot and our team will confirm the most appropriate consultation time after review.</div>
+              <div id="bookingFormError" class="review-error" style="display:none; margin-top:16px; text-align:center;">
+              We could not submit your booking right now. Please try again, or email info@newcomerconnect.ca.
+              </div>
+              <div id="bookingFormSuccess" class="review-success" style="display:none; margin-top:16px; text-align:center;">
+              Thank you. Your consultation request has been sent to our admin team.
+              </div>
+            </section>
+
+            <section class="contact-panel" data-contact-panel="message" role="tabpanel" hidden>
+              <div class="contact-panel-intro">
+                <strong>Direct Message</strong>
+                <span>For simple questions, general guidance, and first contact before a booking.</span>
+              </div>
+              <form id="contactForm" class="async-contact-form" data-async-contact-form data-submit-label="Send Message" data-success-target="#contactFormSuccess" data-error-target="#contactFormError" action="contact-submit.php" method="POST">
+              <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <input type="hidden" name="submission_type" value="contact_inquiry">
+              <input type="hidden" name="submission_label" value="Contact Inquiry">
+              <input type="hidden" name="submission_source_label" value="Contact Page Message">
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-control" name="first_name" placeholder="John" autocomplete="given-name" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control" name="last_name" placeholder="Smith" autocomplete="family-name" required>
+                </div>
+              </div>
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control" name="email" placeholder="john@example.com" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" name="phone" placeholder="Optional" autocomplete="tel">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Your Message</label>
+                <textarea class="form-control" name="message" placeholder="Tell us what you need help with..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-outline" style="width:100%;justify-content:center;">Send Message &#8594;</button>
+              </form>
+              <div id="contactFormError" class="review-error" style="display:none; margin-top:16px; text-align:center;">
+              We could not send your message right now. Please try again, or email info@newcomerconnect.ca.
+              </div>
+              <div id="contactFormSuccess" class="review-success" style="display:none; margin-top:16px; text-align:center;">
+              Thank you. Your message has been sent to our admin team.
+              </div>
+            </section>
             </div>
-            <div class="form-group">
-              <label class="form-label">Phone Number</label>
-              <input type="tel" class="form-control" name="phone" placeholder="+1-289-300-0321 / +92-337-022-2232" autocomplete="tel">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Service Interest</label>
-              <select class="form-control" name="service_interest">
-                <option value="">-- Select a Service --</option>
-                <option>Pre-Arrival Services</option>
-                <option>Post-Arrival Services</option>
-                <option>Immigration &amp; Legal Services</option>
-                <option>General Inquiry</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Your Message</label>
-              <textarea class="form-control" name="message" placeholder="Tell us about your situation and goals..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send Message &#8594;</button>
-          </form>
-          <div id="formError" style="display:none; margin-top:16px; padding:16px; background:rgba(216,41,47,.1); border:1px solid rgba(216,41,47,.25); border-radius:var(--r-md); color:var(--red); font-weight:600; text-align:center;">
-            We could not send your message right now. Please try again, or email info@newcomerconnect.ca.
-          </div>
-          <div id="formSuccess" style="display:none; margin-top:16px; padding:16px; background:rgba(29,110,197,.1); border:1px solid rgba(29,110,197,.2); border-radius:var(--r-md); color:var(--blue); font-weight:600; text-align:center;">
-            &#10003; Thank you! Your request has been sent to our admin team and a confirmation email has been sent to you.
           </div>
         </div>
       </div>

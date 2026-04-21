@@ -21,7 +21,7 @@
     Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
 
-  <FilesMatch "^(admin-reviews|review-admin-api|review-submit|reviews-feed|contact-submit)\.php$">
+  <FilesMatch "^(admin-reviews|admin-bookings|review-admin-api|booking-admin-api|booking-reminders|review-submit|reviews-feed|contact-submit)\.php$">
     Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
   </FilesMatch>
 </IfModule>

@@ -1,9 +1,12 @@
 <?php
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'reviews-lib.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'bookings-lib.php';
 reviews_admin_start_session();
 $auth = reviews_admin_is_authenticated();
 $adminUsername = isset($_SESSION['reviews_admin_username']) ? (string)$_SESSION['reviews_admin_username'] : '';
 $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
+$bookingDashboardPayload = $auth ? bookings_prepare_dashboard_payload(bookings_load_all()) : ['requested' => [], 'upcoming' => [], 'recent' => [], 'stats' => ['requested_count' => 0, 'upcoming_count' => 0, 'urgent_count' => 0, 'day_reminder_due_count' => 0, 'hour_reminder_due_count' => 0]];
+$bookingDashboardJson = htmlspecialchars(json_encode($bookingDashboardPayload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +28,7 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
   </script>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="admin-page" data-admin-email="<?php echo $adminUsernameEscaped; ?>" data-admin-auth="<?php echo $auth ? '1' : '0'; ?>">
+<body class="admin-page" data-admin-email="<?php echo $adminUsernameEscaped; ?>" data-admin-auth="<?php echo $auth ? '1' : '0'; ?>" data-booking-payload="<?php echo $bookingDashboardJson; ?>">
   <?php if (!$auth): ?>
   <div class="admin-auth-shell">
     <div class="admin-auth-bg" aria-hidden="true"></div>
@@ -38,7 +41,7 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         </div>
       </a>
       <h1>Admin Login</h1>
-      <p>Sign in to manage testimonials now and add future modules like blogs, pages, and media.</p>
+      <p>Sign in to manage testimonials, consultation bookings, urgency, and reminder runs from one dashboard.</p>
 
       <form id="adminLoginForm" class="admin-login-form">
         <div class="form-group">
@@ -68,7 +71,9 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
       </a>
 
       <nav class="admin-nav" aria-label="Admin sections">
-        <a class="admin-nav-link active" href="admin-reviews.php">Review Moderation</a>
+        <a class="admin-nav-link active" href="admin-reviews.php">Operations Dashboard</a>
+        <a class="admin-nav-link" href="#reviewModeration">Review Moderation</a>
+        <a class="admin-nav-link" href="#bookingManagement">Consultation Bookings</a>
         <a class="admin-nav-link is-disabled" href="#" aria-disabled="true">Blog Management <em>Coming Soon</em></a>
         <a class="admin-nav-link is-disabled" href="#" aria-disabled="true">Media Library <em>Coming Soon</em></a>
         <a class="admin-nav-link is-disabled" href="#" aria-disabled="true">Page Content <em>Coming Soon</em></a>
@@ -83,7 +88,7 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
           <div>
             <p class="admin-kicker">Website Operations</p>
             <h1>Admin Dashboard</h1>
-            <p class="admin-subtitle">Manage testimonials now, and easily extend this panel for blogs, pages, and media later.</p>
+            <p class="admin-subtitle">Moderate reviews, manage consultation bookings, prioritize urgent cases, and run reminder emails from one place.</p>
           </div>
         </div>
 
@@ -103,40 +108,115 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
       </header>
 
       <section id="adminDashboard" class="admin-dashboard">
-        <div class="admin-kpi-grid">
-          <article class="admin-kpi-card">
-            <p>Pending Reviews</p>
-            <strong id="adminPendingCount">0</strong>
-          </article>
-          <article class="admin-kpi-card">
-            <p>Approved Reviews</p>
-            <strong id="adminApprovedCount">0</strong>
-          </article>
-          <article class="admin-kpi-card">
-            <p>Panel Status</p>
-            <strong>Live</strong>
-          </article>
-        </div>
-
-        <div id="adminStatus" class="review-success" style="display:none;"></div>
-
-        <div class="admin-grid">
-          <section class="admin-section-card">
-            <div class="admin-section-head">
-              <h4 class="admin-col-title">Pending Queue</h4>
-              <span class="admin-chip" id="adminPendingChip">0 items</span>
+        <section id="reviewModeration" class="admin-module-block">
+          <div class="admin-module-head">
+            <div>
+              <p class="admin-kicker">Testimonials</p>
+              <h2 class="admin-module-title">Review Moderation</h2>
+              <p class="admin-subtitle">Approve or reject reviews before they appear on the public website.</p>
             </div>
-            <div id="pendingReviewList" class="admin-review-list"></div>
+          </div>
+
+          <div class="admin-kpi-grid">
+            <article class="admin-kpi-card">
+              <p>Pending Reviews</p>
+              <strong id="adminPendingCount">0</strong>
+            </article>
+            <article class="admin-kpi-card">
+              <p>Approved Reviews</p>
+              <strong id="adminApprovedCount">0</strong>
+            </article>
+            <article class="admin-kpi-card">
+              <p>Module Status</p>
+              <strong>Live</strong>
+            </article>
+          </div>
+
+          <div id="reviewStatus" class="review-success" style="display:none;"></div>
+
+          <div class="admin-grid">
+            <section class="admin-section-card">
+              <div class="admin-section-head">
+                <h4 class="admin-col-title">Pending Queue</h4>
+                <span class="admin-chip" id="adminPendingChip">0 items</span>
+              </div>
+              <div id="pendingReviewList" class="admin-review-list"></div>
+            </section>
+
+            <section class="admin-section-card">
+              <div class="admin-section-head">
+                <h4 class="admin-col-title">Recent Approved</h4>
+                <span class="admin-chip" id="adminApprovedChip">0 items</span>
+              </div>
+              <div id="approvedReviewList" class="admin-review-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="bookingManagement" class="admin-module-block">
+          <div class="admin-module-head">
+            <div>
+              <p class="admin-kicker">Consultations</p>
+              <h2 class="admin-module-title">Consultation Bookings</h2>
+              <p class="admin-subtitle">Review new consultation requests, sort urgent cases, update booking status, and send due reminders.</p>
+            </div>
+          </div>
+
+          <div class="admin-kpi-grid">
+            <article class="admin-kpi-card">
+              <p>Requested Bookings</p>
+              <strong id="requestedCount">0</strong>
+            </article>
+            <article class="admin-kpi-card">
+              <p>Upcoming Schedule</p>
+              <strong id="upcomingCount">0</strong>
+            </article>
+            <article class="admin-kpi-card">
+              <p>Urgent Cases</p>
+              <strong id="urgentCount">0</strong>
+            </article>
+            <article class="admin-kpi-card">
+              <p>Due Reminders</p>
+              <strong id="reminderCount">0</strong>
+            </article>
+          </div>
+
+          <div id="bookingStatus" class="review-success" style="display:none;"></div>
+
+          <section class="admin-toolbar">
+            <div>
+              <h4>Reminder Control</h4>
+              <p>Run due reminders manually here, or point shared hosting cron at booking-reminders.php every 5-10 minutes.</p>
+            </div>
+            <button id="adminRunRemindersBtn" type="button" class="btn btn-primary">Run Due Reminders</button>
           </section>
 
-          <section class="admin-section-card">
-            <div class="admin-section-head">
-              <h4 class="admin-col-title">Recent Approved</h4>
-              <span class="admin-chip" id="adminApprovedChip">0 items</span>
-            </div>
-            <div id="approvedReviewList" class="admin-review-list"></div>
-          </section>
-        </div>
+          <div class="admin-grid">
+            <section class="admin-section-card">
+              <div class="admin-section-head">
+                <h4 class="admin-col-title">Requested Queue</h4>
+                <span class="admin-chip" id="requestedChip">0 items</span>
+              </div>
+              <div id="requestedBookingList" class="admin-booking-list"></div>
+            </section>
+
+            <section class="admin-section-card">
+              <div class="admin-section-head">
+                <h4 class="admin-col-title">Upcoming Schedule</h4>
+                <span class="admin-chip" id="upcomingChip">0 items</span>
+              </div>
+              <div id="upcomingBookingList" class="admin-booking-list"></div>
+            </section>
+
+            <section class="admin-section-card span-full">
+              <div class="admin-section-head">
+                <h4 class="admin-col-title">Recent History</h4>
+                <span class="admin-chip" id="recentChip">0 items</span>
+              </div>
+              <div id="recentBookingList" class="admin-booking-list"></div>
+            </section>
+          </div>
+        </section>
       </section>
     </main>
   </div>
@@ -147,9 +227,13 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
       const dashboard = document.getElementById('adminDashboard');
       const loginForm = document.getElementById('adminLoginForm');
       const loginError = document.getElementById('adminLoginError');
-      const statusBox = document.getElementById('adminStatus');
+      const reviewStatusBox = document.getElementById('reviewStatus');
+      const bookingStatusBox = document.getElementById('bookingStatus');
       const pendingList = document.getElementById('pendingReviewList');
       const approvedList = document.getElementById('approvedReviewList');
+      const requestedList = document.getElementById('requestedBookingList');
+      const upcomingList = document.getElementById('upcomingBookingList');
+      const recentList = document.getElementById('recentBookingList');
       const logoutBtn = document.getElementById('adminLogoutBtn');
       const profileBtn = document.getElementById('adminProfileBtn');
       const profileMenu = document.getElementById('adminProfileMenu');
@@ -159,9 +243,26 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
       const approvedCountEl = document.getElementById('adminApprovedCount');
       const pendingChipEl = document.getElementById('adminPendingChip');
       const approvedChipEl = document.getElementById('adminApprovedChip');
+      const requestedCountEl = document.getElementById('requestedCount');
+      const upcomingCountEl = document.getElementById('upcomingCount');
+      const urgentCountEl = document.getElementById('urgentCount');
+      const reminderCountEl = document.getElementById('reminderCount');
+      const requestedChipEl = document.getElementById('requestedChip');
+      const upcomingChipEl = document.getElementById('upcomingChip');
+      const recentChipEl = document.getElementById('recentChip');
+      const remindersBtn = document.getElementById('adminRunRemindersBtn');
       const sidebarToggleBtn = document.getElementById('adminSidebarToggle');
       const sidebarBackdrop = document.getElementById('adminSidebarBackdrop');
       const isAuthenticated = document.body.getAttribute('data-admin-auth') === '1';
+      const preloadedBookingPayload = (() => {
+        const raw = document.body.getAttribute('data-booking-payload') || '';
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch (error) {
+          return null;
+        }
+      })();
       const SIDEBAR_STATE_KEY = 'admin_sidebar_collapsed';
 
       const stars = (count) => '★'.repeat(Math.max(1, Math.min(5, Number(count) || 0)));
@@ -195,21 +296,11 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         }
       };
 
-      const updateCounts = (pending, approved) => {
-        const pendingCount = Array.isArray(pending) ? pending.length : 0;
-        const approvedCount = Array.isArray(approved) ? approved.length : 0;
-
-        if (pendingCountEl) pendingCountEl.textContent = String(pendingCount);
-        if (approvedCountEl) approvedCountEl.textContent = String(approvedCount);
-        if (pendingChipEl) pendingChipEl.textContent = `${pendingCount} item${pendingCount === 1 ? '' : 's'}`;
-        if (approvedChipEl) approvedChipEl.textContent = `${approvedCount} item${approvedCount === 1 ? '' : 's'}`;
-      };
-
-      const showStatus = (message, isError) => {
-        if (!statusBox) return;
-        statusBox.textContent = message || '';
-        statusBox.className = isError ? 'review-error' : 'review-success';
-        statusBox.style.display = message ? 'block' : 'none';
+      const showStatus = (element, message, isError) => {
+        if (!element) return;
+        element.textContent = message || '';
+        element.className = isError ? 'review-error' : 'review-success';
+        element.style.display = message ? 'block' : 'none';
       };
 
       const setSidebarCollapsed = (collapsed, persist) => {
@@ -258,13 +349,15 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         setSidebarCollapsed(collapsed, false);
       };
 
-      async function api(action, payload) {
+      async function reviewApi(action, payload) {
         const body = new FormData();
         body.append('action', action);
-        Object.entries(payload || {}).forEach(([k, v]) => body.append(k, v));
+        Object.entries(payload || {}).forEach(([key, value]) => body.append(key, value));
 
         const response = await fetch('review-admin-api.php', {
           method: 'POST',
+          credentials: 'same-origin',
+          cache: 'no-store',
           headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
           body
         });
@@ -276,8 +369,10 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         return data;
       }
 
-      async function fetchList() {
-        const response = await fetch('review-admin-api.php?action=list', {
+      async function reviewFetchList() {
+        const response = await fetch(`review-admin-api.php?action=list&_=${Date.now()}`, {
+          credentials: 'same-origin',
+          cache: 'no-store',
           headers: { Accept: 'application/json' }
         });
         const data = await response.json().catch(() => ({}));
@@ -287,7 +382,67 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         return data;
       }
 
-      function renderPending(items) {
+      async function bookingApi(action, payload) {
+        const body = new FormData();
+        body.append('action', action);
+        Object.entries(payload || {}).forEach(([key, value]) => body.append(key, value));
+
+        const response = await fetch('booking-admin-api.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          cache: 'no-store',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Request failed.');
+        }
+
+        return data;
+      }
+
+      async function bookingFetchList() {
+        const response = await fetch(`booking-admin-api.php?action=list&_=${Date.now()}`, {
+          credentials: 'same-origin',
+          cache: 'no-store',
+          headers: { Accept: 'application/json' }
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Could not load bookings.');
+        }
+        return data;
+      }
+
+      const updateReviewCounts = (pending, approved) => {
+        const pendingCount = Array.isArray(pending) ? pending.length : 0;
+        const approvedCount = Array.isArray(approved) ? approved.length : 0;
+
+        if (pendingCountEl) pendingCountEl.textContent = String(pendingCount);
+        if (approvedCountEl) approvedCountEl.textContent = String(approvedCount);
+        if (pendingChipEl) pendingChipEl.textContent = `${pendingCount} item${pendingCount === 1 ? '' : 's'}`;
+        if (approvedChipEl) approvedChipEl.textContent = `${approvedCount} item${approvedCount === 1 ? '' : 's'}`;
+      };
+
+      const updateBookingCounts = (stats, requested, upcoming, recent) => {
+        const requestedCount = Number(stats?.requested_count || requested.length || 0);
+        const upcomingCount = Number(stats?.upcoming_count || upcoming.length || 0);
+        const urgentCount = Number(stats?.urgent_count || 0);
+        const reminderCount = Number(stats?.day_reminder_due_count || 0) + Number(stats?.hour_reminder_due_count || 0);
+
+        if (requestedCountEl) requestedCountEl.textContent = String(requestedCount);
+        if (upcomingCountEl) upcomingCountEl.textContent = String(upcomingCount);
+        if (urgentCountEl) urgentCountEl.textContent = String(urgentCount);
+        if (reminderCountEl) reminderCountEl.textContent = String(reminderCount);
+        if (requestedChipEl) requestedChipEl.textContent = `${requested.length} item${requested.length === 1 ? '' : 's'}`;
+        if (upcomingChipEl) upcomingChipEl.textContent = `${upcoming.length} item${upcoming.length === 1 ? '' : 's'}`;
+        if (recentChipEl) recentChipEl.textContent = `${recent.length} item${recent.length === 1 ? '' : 's'}`;
+      };
+
+      const renderPending = (items) => {
         if (!pendingList) return;
         if (!Array.isArray(items) || items.length === 0) {
           pendingList.innerHTML = '<div class="admin-empty">No pending reviews.</div>';
@@ -309,9 +464,9 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
             </div>
           </article>
         `).join('');
-      }
+      };
 
-      function renderApproved(items) {
+      const renderApproved = (items) => {
         if (!approvedList) return;
         if (!Array.isArray(items) || items.length === 0) {
           approvedList.innerHTML = '<div class="admin-empty">No approved reviews yet.</div>';
@@ -328,20 +483,121 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
             <p>${esc(item.message)}</p>
           </article>
         `).join('');
-      }
+      };
 
-      async function refreshDashboard() {
+      const reminderSummary = (item) => {
+        if (!item) return 'Reminder state unavailable.';
+        if (['completed', 'cancelled'].includes(item.status)) {
+          return `Reminders disabled because this booking is ${item.status_label.toLowerCase()}.`;
+        }
+
+        const dayState = item.day_reminder_sent_at ? 'Day-before sent' : 'Day-before pending';
+        const hourState = item.hour_reminder_sent_at ? '1-hour sent' : '1-hour pending';
+        return `${dayState} | ${hourState}`;
+      };
+
+      const renderActionButtons = (item) => {
+        const id = esc(item.id || '');
+        const actions = [];
+
+        if (item.status === 'requested') {
+          actions.push(`<button class="btn btn-primary" type="button" data-booking-action="status" data-id="${id}" data-status="confirmed">Confirm</button>`);
+          actions.push(`<button class="btn btn-outline" type="button" data-booking-action="status" data-id="${id}" data-status="cancelled">Cancel</button>`);
+        } else if (item.status === 'confirmed') {
+          actions.push(`<button class="btn btn-primary" type="button" data-booking-action="status" data-id="${id}" data-status="completed">Complete</button>`);
+          actions.push(`<button class="btn btn-outline" type="button" data-booking-action="status" data-id="${id}" data-status="cancelled">Cancel</button>`);
+          actions.push(`<button class="btn btn-outline" type="button" data-booking-action="status" data-id="${id}" data-status="requested">Reset</button>`);
+        } else {
+          actions.push(`<button class="btn btn-outline" type="button" data-booking-action="status" data-id="${id}" data-status="requested">Reopen</button>`);
+        }
+
+        return actions.join('');
+      };
+
+      const renderBookingCard = (item) => {
+        const email = esc(item.email || '');
+        const phone = esc(item.phone || '');
+        const phoneLink = esc((item.phone || '').replace(/[^0-9+]/g, ''));
+        const source = esc(item.source_label || 'Website');
+        const service = esc(item.service_interest || 'Not specified');
+        const schedule = esc(item.scheduled_display || 'Schedule pending');
+        const urgencyClass = esc(`urgency-${item.urgency || 'standard'}`);
+        const statusClass = esc(`status-${item.status || 'requested'}`);
+        const message = esc(item.message || 'No notes provided.');
+
+        return `
+          <article class="admin-booking-card">
+            <div class="admin-booking-head">
+              <div>
+                <strong>${esc(item.full_name || 'Booking')}</strong>
+                <span>${esc(item.source_label || 'Website')}</span>
+              </div>
+              <div class="admin-booking-tags">
+                <span class="admin-badge ${statusClass}">${esc(item.status_label || 'Requested')}</span>
+                <span class="admin-badge ${urgencyClass}">${esc(item.urgency_label || 'Standard')}</span>
+              </div>
+            </div>
+            <div class="admin-booking-meta">${schedule} | ${service}</div>
+            <p class="admin-booking-note">${message}</p>
+            <div class="admin-booking-contact">
+              <a href="mailto:${email}">${email}</a>
+              ${phone ? `<a href="tel:${phoneLink}">${phone}</a>` : '<span>Phone not provided</span>'}
+            </div>
+            <div class="admin-reminder-line">${esc(reminderSummary(item))}</div>
+            <div class="admin-booking-actions">${renderActionButtons(item)}</div>
+          </article>
+        `;
+      };
+
+      const renderBookingList = (container, items, emptyMessage) => {
+        if (!container) return;
+        if (!Array.isArray(items) || items.length === 0) {
+          container.innerHTML = `<div class="admin-empty">${esc(emptyMessage)}</div>`;
+          return;
+        }
+
+        container.innerHTML = items.map((item) => renderBookingCard(item)).join('');
+      };
+
+      async function refreshReviewDashboard() {
         try {
-          const data = await fetchList();
+          const data = await reviewFetchList();
           const pending = data.pending || [];
           const approved = data.approved || [];
           renderPending(pending);
           renderApproved(approved);
-          updateCounts(pending, approved);
+          updateReviewCounts(pending, approved);
         } catch (error) {
-          showStatus(error.message, true);
+          showStatus(reviewStatusBox, error.message, true);
         }
       }
+
+      async function refreshBookingDashboard() {
+        try {
+          const data = await bookingFetchList();
+          const requested = data.requested || [];
+          const upcoming = data.upcoming || [];
+          const recent = data.recent || [];
+
+          renderBookingList(requestedList, requested, 'No requested bookings right now.');
+          renderBookingList(upcomingList, upcoming, 'No upcoming consultations yet.');
+          renderBookingList(recentList, recent, 'No completed or cancelled bookings yet.');
+          updateBookingCounts(data.stats || {}, requested, upcoming, recent);
+        } catch (error) {
+          showStatus(bookingStatusBox, error.message, true);
+        }
+      }
+
+      const hydrateBookingDashboard = (data) => {
+        const requested = data?.requested || [];
+        const upcoming = data?.upcoming || [];
+        const recent = data?.recent || [];
+
+        renderBookingList(requestedList, requested, 'No requested bookings right now.');
+        renderBookingList(upcomingList, upcoming, 'No upcoming consultations yet.');
+        renderBookingList(recentList, recent, 'No completed or cancelled bookings yet.');
+        updateBookingCounts(data?.stats || {}, requested, upcoming, recent);
+      };
 
       if (profileBtn && profileMenu) {
         profileBtn.addEventListener('click', () => {
@@ -375,7 +631,6 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         if (!isAuthenticated) return;
 
         if (!window.matchMedia('(max-width: 768px)').matches) {
-          // On desktop, default to expanded when no explicit preference.
           let hasPreference = true;
           try {
             hasPreference = localStorage.getItem(SIDEBAR_STATE_KEY) !== null;
@@ -400,7 +655,7 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
           const password = loginForm.password.value;
 
           try {
-            await api('login', { username, password });
+            await reviewApi('login', { username, password });
             window.location.reload();
           } catch (error) {
             if (loginError) {
@@ -414,7 +669,7 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
           try {
-            await api('logout');
+            await reviewApi('logout');
           } catch (e) {
             // Intentionally ignored to ensure local logout UI reset.
           }
@@ -422,28 +677,70 @@ $adminUsernameEscaped = htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8');
         });
       }
 
+      if (remindersBtn) {
+        remindersBtn.addEventListener('click', async () => {
+          remindersBtn.disabled = true;
+          const originalLabel = remindersBtn.textContent;
+          remindersBtn.textContent = 'Running...';
+
+          try {
+            const data = await bookingApi('send-reminders');
+            const result = data.result || {};
+            const message = `Reminders processed. Day-before sent: ${result.day_sent || 0}. One-hour sent: ${result.hour_sent || 0}.`;
+            showStatus(bookingStatusBox, message, false);
+            await refreshBookingDashboard();
+          } catch (error) {
+            showStatus(bookingStatusBox, error.message, true);
+          } finally {
+            remindersBtn.disabled = false;
+            remindersBtn.textContent = originalLabel;
+          }
+        });
+      }
+
       document.addEventListener('click', async (event) => {
         const target = event.target;
         if (!(target instanceof HTMLElement)) return;
 
-        const action = target.getAttribute('data-action');
+        const reviewAction = target.getAttribute('data-action');
         const reviewId = target.getAttribute('data-id');
-        if (!action || !reviewId) return;
+        if (reviewAction && reviewId) {
+          target.disabled = true;
+          try {
+            await reviewApi(reviewAction, { id: reviewId });
+            showStatus(reviewStatusBox, reviewAction === 'approve' ? 'Review approved.' : 'Review rejected.', false);
+            await refreshReviewDashboard();
+          } catch (error) {
+            showStatus(reviewStatusBox, error.message, true);
+          } finally {
+            target.disabled = false;
+          }
+          return;
+        }
+
+        const bookingAction = target.getAttribute('data-booking-action');
+        const bookingId = target.getAttribute('data-id');
+        const status = target.getAttribute('data-status');
+        if (!bookingAction || !bookingId || !status) return;
 
         target.disabled = true;
         try {
-          await api(action, { id: reviewId });
-          showStatus(action === 'approve' ? 'Review approved.' : 'Review rejected.', false);
-          await refreshDashboard();
+          const data = await bookingApi('status', { id: bookingId, status });
+          showStatus(bookingStatusBox, data.message || 'Booking updated.', false);
+          await refreshBookingDashboard();
         } catch (error) {
-          showStatus(error.message, true);
+          showStatus(bookingStatusBox, error.message, true);
         } finally {
           target.disabled = false;
         }
       });
 
       if (isAuthenticated && dashboard) {
-        refreshDashboard();
+        if (preloadedBookingPayload) {
+          hydrateBookingDashboard(preloadedBookingPayload);
+        }
+        refreshReviewDashboard();
+        refreshBookingDashboard();
       }
     })();
   </script>

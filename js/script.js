@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initMobileMenu();
   initScrollReveal();
-  initSiteLeafRain();
   initParallaxMedia();
   initGalleryAutoScroll();
   initSliders();
@@ -18,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCounters();
   initFAQ();
   initContactForm();
+  initContactFormSwitcher();
   initReviewForms();
   loadApprovedReviews();
   initUnifiedFooter();
@@ -549,76 +549,135 @@ function initFAQ() {
 
 /*  CONTACT FORM  */
 function initContactForm() {
-  const form = document.getElementById('contactForm');
-  const success = document.getElementById('formSuccess');
-  const error = document.getElementById('formError');
-  const submitButton = form ? form.querySelector('button[type="submit"]') : null;
-  const defaultButtonText = submitButton ? submitButton.innerHTML : '';
-  if (!form) return;
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
+  const forms = document.querySelectorAll('[data-async-contact-form]');
+  if (!forms.length) return;
 
-    if (success) success.style.display = 'none';
-    if (error) error.style.display = 'none';
-
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Sending...';
-    }
-
-    try {
-      const endpoint = form.getAttribute('action');
-      if (!endpoint) throw new Error('Missing form endpoint');
-
-      const formData = new FormData(form);
-      if (!formData.get('page_title')) {
-        formData.set('page_title', document.title || 'Website');
-      }
-      if (!formData.get('page_url')) {
-        formData.set('page_url', window.location.href || '');
-      }
-      if (!formData.get('submission_source')) {
-        const currentPath = (window.location.pathname || '').split('/').pop();
-        formData.set('submission_source', currentPath || 'website');
-      }
-
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: formData
-      });
-
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok || !payload.success) {
-        const message = payload && payload.message ? payload.message : 'Request failed';
-        throw new Error(message);
-      }
-
-      form.reset();
-      form.style.display = 'none';
-      if (success) {
-        if (payload.message) {
-          success.textContent = payload.message;
-        }
-        success.style.display = 'block';
-      }
-    } catch (submitError) {
-      if (error) {
-        if (submitError && submitError.message) {
-          error.textContent = submitError.message;
-        }
-        error.style.display = 'block';
-      }
-    } finally {
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.innerHTML = defaultButtonText;
-      }
-    }
+  const today = new Date();
+  const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  document.querySelectorAll('[data-booking-date]').forEach((input) => {
+    input.setAttribute('min', todayString);
   });
+
+  let browserTimezone = '';
+  try {
+    browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+  } catch (error) {
+    browserTimezone = '';
+  }
+
+  forms.forEach((form) => {
+    const successSelector = form.getAttribute('data-success-target') || '';
+    const errorSelector = form.getAttribute('data-error-target') || '';
+    const success = successSelector ? document.querySelector(successSelector) : null;
+    const error = errorSelector ? document.querySelector(errorSelector) : null;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const defaultButtonText = submitButton ? submitButton.innerHTML : '';
+
+    const browserTimezoneInput = form.querySelector('input[name="browser_timezone"]');
+    if (browserTimezoneInput) {
+      browserTimezoneInput.value = browserTimezone;
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      if (success) success.style.display = 'none';
+      if (error) error.style.display = 'none';
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+      }
+
+      try {
+        const endpoint = form.getAttribute('action');
+        if (!endpoint) throw new Error('Missing form endpoint');
+
+        const formData = new FormData(form);
+        if (!formData.get('page_title')) {
+          formData.set('page_title', document.title || 'Website');
+        }
+        if (!formData.get('page_url')) {
+          formData.set('page_url', window.location.href || '');
+        }
+        if (!formData.get('submission_source')) {
+          const currentPath = (window.location.pathname || '').split('/').pop();
+          formData.set('submission_source', currentPath || 'website');
+        }
+        if (!formData.get('browser_timezone') && browserTimezone) {
+          formData.set('browser_timezone', browserTimezone);
+        }
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: formData
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || !payload.success) {
+          const message = payload && payload.message ? payload.message : 'Request failed';
+          throw new Error(message);
+        }
+
+        form.reset();
+        form.style.display = 'none';
+        if (success) {
+          if (payload.message) {
+            success.textContent = payload.message;
+          }
+          success.style.display = 'block';
+        }
+      } catch (submitError) {
+        if (error) {
+          if (submitError && submitError.message) {
+            error.textContent = submitError.message;
+          }
+          error.style.display = 'block';
+        }
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerHTML = defaultButtonText;
+        }
+      }
+    });
+  });
+}
+
+function initContactFormSwitcher() {
+  const triggers = Array.from(document.querySelectorAll('[data-contact-panel-trigger]'));
+  const panels = Array.from(document.querySelectorAll('[data-contact-panel]'));
+  if (!triggers.length || !panels.length) return;
+
+  const setActivePanel = (panelName) => {
+    triggers.forEach((button) => {
+      const isActive = button.getAttribute('data-contact-panel-trigger') === panelName;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-selected', String(isActive));
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.getAttribute('data-contact-panel') === panelName;
+      panel.classList.toggle('is-active', isActive);
+      panel.hidden = !isActive;
+    });
+  };
+
+  triggers.forEach((button) => {
+    button.addEventListener('click', () => {
+      const panelName = button.getAttribute('data-contact-panel-trigger');
+      if (!panelName) return;
+      setActivePanel(panelName);
+    });
+  });
+
+  const activeTrigger = triggers.find((button) => button.classList.contains('is-active')) || triggers[0];
+  const initialPanel = activeTrigger.getAttribute('data-contact-panel-trigger') || 'booking';
+  setActivePanel(initialPanel);
 }
 
 /*  REVIEW FORMS  */
