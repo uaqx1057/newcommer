@@ -1,5 +1,16 @@
 User-agent: *
 Allow: /
+Disallow: /admin-bookings.php
+Disallow: /admin-reviews.php
+Disallow: /booking-admin-api.php
+Disallow: /review-admin-api.php
+Disallow: /review-admin-config.php
+Disallow: /contact-submit.php
+Disallow: /review-submit.php
+Disallow: /reviews-feed.php
+Disallow: /booking-reminders.php
+Disallow: /logo-options.html
+Disallow: /data/
 
 Sitemap: https://newcomerconnect.ca/sitemap-index.xml
 Sitemap: https://newcomerconnect.ca/sitemap-pages.xml

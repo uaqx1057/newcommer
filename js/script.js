@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initMobileMenu();
   initScrollReveal();
+  initSiteLeafRain();
+  initHeroLeafRain();
   initParallaxMedia();
   initGalleryAutoScroll();
   initSliders();
@@ -20,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactFormSwitcher();
   initReviewForms();
   loadApprovedReviews();
-  initUnifiedFooter();
 });
 
 window.addEventListener('pageshow', () => {
@@ -129,6 +130,21 @@ function loadDeferredVideosWithin(root) {
   });
 }
 
+function playDeferredVideo(video) {
+  if (!(video instanceof HTMLVideoElement)) return;
+
+  loadDeferredVideo(video);
+  video.muted = true;
+  video.playsInline = true;
+
+  const playPromise = video.play();
+  if (playPromise && typeof playPromise.catch === 'function') {
+    playPromise.catch(() => {
+      // Ignore autoplay rejections from stricter browser policies.
+    });
+  }
+}
+
 function initDeferredVideos() {
   const deferredVideos = Array.from(document.querySelectorAll('video[data-deferred-video]'));
   if (!deferredVideos.length) return;
@@ -146,6 +162,28 @@ function initDeferredVideos() {
     deferredInView.forEach((video) => observer.observe(video));
   }
 
+  const autoplayVideos = deferredVideos.filter((video) => video.hasAttribute('data-autoplay-on-view'));
+  if (autoplayVideos.length) {
+    const autoplayObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (!(video instanceof HTMLVideoElement)) return;
+
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+          playDeferredVideo(video);
+          return;
+        }
+
+        video.pause();
+      });
+    }, {
+      threshold: [0.45, 0.7],
+      rootMargin: '0px 0px -6% 0px'
+    });
+
+    autoplayVideos.forEach((video) => autoplayObserver.observe(video));
+  }
+
   deferredVideos.forEach((video) => {
     const prepareVideo = () => loadDeferredVideo(video);
     video.addEventListener('mouseenter', prepareVideo, { once: true });
@@ -157,7 +195,7 @@ function initDeferredVideos() {
 function initSiteLeafRain() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  if (prefersReducedMotion || isMobile) return;
+  if (prefersReducedMotion) return;
 
   const existing = document.querySelector('.site-leaf-rain');
   if (existing) return;
@@ -167,19 +205,19 @@ function initSiteLeafRain() {
   layer.setAttribute('aria-hidden', 'true');
   document.body.appendChild(layer);
 
-  const leafCount = 22;
+  const leafCount = isMobile ? 10 : 22;
   const leafSrc = 'assets/images/maple-leaf-transparent.png';
   const frag = document.createDocumentFragment();
 
   for (let i = 0; i < leafCount; i += 1) {
     const leaf = document.createElement('img');
-    const size = 18 + Math.random() * 26;
-    const scale = 0.68 + Math.random() * 0.6;
-    const drift = -110 + Math.random() * 220;
-    const duration = 12 + Math.random() * 13;
+    const size = (isMobile ? 14 : 18) + Math.random() * (isMobile ? 14 : 26);
+    const scale = (isMobile ? 0.56 : 0.68) + Math.random() * (isMobile ? 0.34 : 0.6);
+    const drift = (isMobile ? -70 : -110) + Math.random() * (isMobile ? 140 : 220);
+    const duration = (isMobile ? 9 : 12) + Math.random() * (isMobile ? 9 : 13);
     const delay = -Math.random() * duration;
     const rotateStart = -80 + Math.random() * 160;
-    const rotateEnd = rotateStart + 420 + Math.random() * 260;
+    const rotateEnd = rotateStart + (isMobile ? 320 : 420) + Math.random() * (isMobile ? 180 : 260);
 
     leaf.className = 'site-leaf';
     leaf.src = leafSrc;
@@ -193,7 +231,7 @@ function initSiteLeafRain() {
     leaf.style.setProperty('--leaf-delay', `${delay.toFixed(2)}s`);
     leaf.style.setProperty('--leaf-rotate-start', `${rotateStart.toFixed(1)}deg`);
     leaf.style.setProperty('--leaf-rotate-end', `${rotateEnd.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-opacity', `${(0.24 + Math.random() * 0.34).toFixed(2)}`);
+    leaf.style.setProperty('--leaf-opacity', `${((isMobile ? 0.18 : 0.24) + Math.random() * (isMobile ? 0.22 : 0.34)).toFixed(2)}`);
 
     frag.appendChild(leaf);
   }
@@ -208,24 +246,25 @@ function initHeroLeafRain() {
 
   const rainLayer = hero.querySelector('.hero-leaf-rain');
   if (!rainLayer) return;
+  if (rainLayer.children.length) return;
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const leafCount = isMobile ? 10 : 18;
+  const leafCount = isMobile ? 8 : 18;
   const leafSrc = 'assets/images/maple-leaf-transparent.png';
   const frag = document.createDocumentFragment();
 
   for (let i = 0; i < leafCount; i += 1) {
     const leaf = document.createElement('img');
-    const size = 22 + Math.random() * 30;
-    const scale = 0.75 + Math.random() * 0.65;
-    const drift = -90 + Math.random() * 180;
-    const duration = 11 + Math.random() * 12;
+    const size = (isMobile ? 16 : 22) + Math.random() * (isMobile ? 16 : 30);
+    const scale = (isMobile ? 0.62 : 0.75) + Math.random() * (isMobile ? 0.34 : 0.65);
+    const drift = (isMobile ? -56 : -90) + Math.random() * (isMobile ? 112 : 180);
+    const duration = (isMobile ? 9 : 11) + Math.random() * (isMobile ? 8 : 12);
     const delay = -Math.random() * duration;
     const rotateStart = -60 + Math.random() * 120;
-    const rotateEnd = rotateStart + 420 + Math.random() * 260;
+    const rotateEnd = rotateStart + (isMobile ? 320 : 420) + Math.random() * (isMobile ? 160 : 260);
 
     leaf.className = 'hero-leaf';
     leaf.src = leafSrc;
@@ -239,7 +278,7 @@ function initHeroLeafRain() {
     leaf.style.setProperty('--leaf-delay', `${delay.toFixed(2)}s`);
     leaf.style.setProperty('--leaf-rotate-start', `${rotateStart.toFixed(1)}deg`);
     leaf.style.setProperty('--leaf-rotate-end', `${rotateEnd.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-opacity', `${(0.35 + Math.random() * 0.5).toFixed(2)}`);
+    leaf.style.setProperty('--leaf-opacity', `${((isMobile ? 0.24 : 0.35) + Math.random() * (isMobile ? 0.24 : 0.5)).toFixed(2)}`);
 
     frag.appendChild(leaf);
   }
@@ -845,47 +884,3 @@ async function loadApprovedReviews() {
   }
 }
 
-/*  UNIFIED FOOTER  */
-function initUnifiedFooter() {
-  const footer = document.querySelector('footer');
-  if (!footer) return;
-
-  const ctaBand = document.querySelector('.cta-band');
-  if (ctaBand) ctaBand.remove();
-
-  footer.classList.add('footer-modern');
-  footer.innerHTML = `
-    <div class="container">
-      <div class="footer-modern-wrap">
-        <a href="index.html" class="footer-modern-logo" aria-label="Newcomer Connect">
-          <img src="assets/icons/logo-real.png" alt="Newcomer Connect">
-          <span>Newcomer<br>Connect</span>
-        </a>
-        <h2 class="footer-modern-title">Ready to Start Your Canadian Journey?</h2>
-
-        <div class="footer-modern-contacts">
-          <a href="mailto:info@newcomerconnect.ca" class="footer-pill">info@newcomerconnect.ca</a>
-          <a href="tel:+12893000321" class="footer-pill">Canada: +1-289-300-0321</a>
-          <a href="tel:+923370222232" class="footer-pill">Pakistan: +92-337-022-2232</a>
-          <a href="https://maps.google.com/?q=50+Steeles+Ave+East,+Unit+209,+Milton,+Ontario,+L9T+4W9,+Canada" class="footer-pill" target="_blank" rel="noopener">Canada Office: 50 Steeles Ave East, Unit 209, Milton, ON</a>
-          <a href="https://maps.google.com/?q=Suite+35,+Moti+Bazar+Mall,+Safari+Villas+1,+Bahria+Town,+Rawalpindi,+Pakistan" class="footer-pill" target="_blank" rel="noopener">Pakistan Office: Suite#35, Moti Bazar Mall, Bahria Town, Rawalpindi</a>
-        </div>
-
-        <div class="footer-modern-line" aria-hidden="true"></div>
-
-        <div class="footer-modern-social">
-          <a href="services.html" class="footer-social-pill">Services</a>
-          <a href="team.html" class="footer-social-pill">Our Team</a>
-          <a href="faq.html" class="footer-social-pill">FAQ</a>
-          <a href="contact.html" class="footer-social-pill">Book Consultation</a>
-        </div>
-
-        <div class="footer-modern-line" aria-hidden="true"></div>
-
-        <p class="footer-modern-copy">&copy; 2026 Newcomer Connect | All Rights Reserved | Website by <a href="https://codewithusman.com" target="_blank" rel="noopener">codewithusman.com</a></p>
-      </div>
-    </div>
-  `;
-
-  applyThemeLogoAssets();
-}
