@@ -24,6 +24,8 @@
   <meta name="twitter:image:alt" content="Toronto harbourfront skyline representing a new start in Canada">
   <meta name="author" content="Newcomer Connect">
   <meta name="theme-color" content="#D8292F">
+  <link rel="icon" href="assets/icons/logo.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="assets/Harbourfront%20Toronto-home-mobile.jpg" imagesrcset="assets/Harbourfront%20Toronto-home-mobile.jpg 760w, assets/Harbourfront%20Toronto-home.jpg 1200w" imagesizes="(max-width: 768px) 380px, (max-width: 1200px) 42vw, 520px" fetchpriority="high">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -110,21 +112,21 @@
   </script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.min.css?v=20260425-home-css">
 </head>
-<body>
+<body class="home-page">
 
   <!--  HEADER  -->
   <header id="mainHeader">
     <div class="container">
       <nav class="navbar">
         <a href="index.html" class="logo">
-          <img src="assets/icons/logo-real.png" alt="NCC">
+          <img src="assets/icons/logo-real-home-mobile.png" srcset="assets/icons/logo-real-home-mobile.png 246w, assets/icons/logo-real.png 320w" sizes="(max-width: 768px) 123px, 202px" data-light-src="assets/icons/logo-real-home-mobile.png" data-light-srcset="assets/icons/logo-real-home-mobile.png 246w, assets/icons/logo-real.png 320w" data-dark-src="assets/icons/Logo-real-dark-home-mobile.png" data-dark-srcset="assets/icons/Logo-real-dark-home-mobile.png 246w, assets/icons/Logo-real-dark.png 320w" alt="Newcomer Connect" width="320" height="130">
           Newcomer<span class="logo-highlight">Connect</span>
         </a>
-        <button class="nav-toggle" id="navToggle" aria-label="Open menu"></button>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu"></button>
         <nav id="navMenu">
-          <button class="nav-close" id="navClose" aria-label="Close menu"></button>
+          <button class="nav-close" id="navClose" type="button" aria-label="Close menu"></button>
           <ul>
             <li><a href="index.html" aria-current="page">Home</a></li>
             <li><a href="about.html">About</a></li>
@@ -134,9 +136,9 @@
             <li><a href="blog.html">Blog</a></li>
             <li><a href="testimonials.html">Testimonials</a></li>
             <li><a href="contact.html" class="nav-cta">Book Consultation</a></li>
-            <button class="theme-switcher" id="themeSwitcher">
-              <ion-icon name="moon-outline"></ion-icon>
-            </button>
+            <li class="theme-switcher-item"><button class="theme-switcher" id="themeSwitcher" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+              <ion-icon name="moon-outline" aria-hidden="true"></ion-icon>
+            </button></li>
           </ul>
         </nav>
       </nav>
@@ -146,7 +148,7 @@
   <!--  HERO  -->
   <section class="hero">
     <div class="hero-bg-img">
-      <img src="assets/images/toronto-cityscape.jpg" alt="">
+      <img src="assets/images/toronto-cityscape-home-mobile.jpg" srcset="assets/images/toronto-cityscape-home-mobile.jpg 820w, assets/images/toronto-cityscape-home.jpg 1600w" sizes="100vw" alt="" width="820" height="615" loading="eager" fetchpriority="low" decoding="async" aria-hidden="true">
     </div>
     <div class="hero-glow"></div>
     <div class="hero-grid-overlay"></div>
@@ -154,7 +156,7 @@
     <div class="container">
       <div class="hero-layout">
         <!-- LEFT CONTENT -->
-        <div class="hero-content reveal">
+        <div class="hero-content">
           <div class="hero-eyebrow">
             <div class="eyebrow-line"></div>
             <span class="eyebrow-text">20+ Years of Experience Supporting People from Diverse Backgrounds</span>
@@ -186,11 +188,11 @@
           </div>
         </div>
         <!-- RIGHT VISUAL -->
-        <div class="hero-visual reveal reveal-d2">
+        <div class="hero-visual">
           <div class="hero-img-card">
-            <img src="assets/Harbourfront%20Toronto.webp" alt="Toronto harbourfront skyline representing your new start in Canada" loading="lazy" decoding="async">
+            <img src="assets/Harbourfront%20Toronto-home-mobile.jpg" srcset="assets/Harbourfront%20Toronto-home-mobile.jpg 760w, assets/Harbourfront%20Toronto-home.jpg 1200w" sizes="(max-width: 768px) 380px, (max-width: 1200px) 42vw, 520px" alt="Toronto harbourfront skyline representing your new start in Canada" width="760" height="507" loading="eager" fetchpriority="high" decoding="async">
             <div class="hero-img-caption">
-              <h4>Strategic, Personalized, Actionable</h4>
+              <p class="hero-img-title">Strategic, Personalized, Actionable</p>
               <p>One professional framework, from pre-arrival planning to full integration.</p>
             </div>
           </div>
@@ -254,19 +256,19 @@
       </div>
       <div class="service-grid grid-3">
         <a href="pre-arrival.html" class="service-card reveal">
-          <div class="sc-icon"><img src="assets/icons/pre-arrival.svg" alt="Pre-Arrival"></div>
+          <div class="sc-icon"><img src="assets/icons/pre-arrival.svg" alt="Pre-Arrival" width="30" height="30"></div>
           <h3>Pre-Arrival Services</h3>
           <p>Personalized pre-arrival guidance covering settlement planning, housing, budgeting, banking, healthcare, job market insights, and career preparation through virtual consultations.</p>
           <span class="sc-link">Learn More</span>
         </a>
         <a href="post-arrival.html" class="service-card reveal reveal-d2">
-          <div class="sc-icon"><img src="assets/icons/post-arrival.svg" alt="Post-Arrival"></div>
+          <div class="sc-icon"><img src="assets/icons/post-arrival.svg" alt="Post-Arrival" width="30" height="30"></div>
           <h3>Post-Arrival Services</h3>
           <p>Comprehensive post-arrival support including airport coordination, government documentation, banking, housing, career launch, education logistics, and community integration.</p>
           <span class="sc-link">Learn More</span>
         </a>
         <a href="legal-services.html" class="service-card reveal reveal-d4">
-          <div class="sc-icon"><img src="assets/icons/legal.svg" alt="Legal"></div>
+          <div class="sc-icon"><img src="assets/icons/legal.svg" alt="Legal" width="30" height="30"></div>
           <h3>Immigration & Legal</h3>
           <p>Expert legal services through Bukhari Law Professional Corporation covering Express Entry, family sponsorships, work permits, student visas, refugee claims, and citizenship.</p>
           <span class="sc-link">Learn More</span>
@@ -293,7 +295,7 @@
         <div class="slider" data-slider data-autoplay="4500">
           <div class="slides">
             <div class="slide">
-              <img src="assets/Eagle%20Bridge_Ontario.jpg" alt="Suspension bridge across an Ontario canyon" loading="lazy" decoding="async">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Eagle%20Bridge_Ontario.jpg" data-deferred-image alt="Suspension bridge across an Ontario canyon" width="4000" height="2252" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Step Into Your New Chapter</h3>
@@ -302,7 +304,7 @@
               </div>
             </div>
             <div class="slide">
-              <img src="assets/Harbourfront%20Toronto.png" alt="Toronto harbourfront skyline at sunset" loading="lazy" decoding="async">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Harbourfront%20Toronto-home.jpg" data-deferred-image alt="Toronto harbourfront skyline at sunset" width="1200" height="800" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Settle Close to Opportunity</h3>
@@ -311,7 +313,7 @@
               </div>
             </div>
             <div class="slide">
-              <img src="assets/Niagara%20Falls.webp" alt="Niagara Falls in Ontario" loading="lazy" decoding="async">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Niagara%20Falls.webp" data-deferred-image alt="Niagara Falls in Ontario" width="1536" height="1024" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Experience More of Canada</h3>
@@ -320,7 +322,7 @@
               </div>
             </div>
             <div class="slide">
-              <img src="assets/Banff.webp" alt="Turquoise lake in Banff National Park" loading="lazy" decoding="async">
+              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Banff.webp" data-deferred-image alt="Turquoise lake in Banff National Park" width="1672" height="941" loading="lazy" decoding="async">
               <div class="slide-overlay">
                 <div class="slide-caption">
                   <h3>Build a Life With Room to Breathe</h3>
@@ -329,12 +331,13 @@
               </div>
             </div>
           </div>
-          <button class="slider-control prev" aria-label="Previous slide"></button>
-          <button class="slider-control next" aria-label="Next slide"></button>
+          <button class="slider-control prev" type="button" aria-label="Previous slide"></button>
+          <button class="slider-control next" type="button" aria-label="Next slide"></button>
           <div class="slider-dots">
-            <button class="slider-dot active"></button>
-            <button class="slider-dot"></button>
-            <button class="slider-dot"></button>
+            <button class="slider-dot active" type="button" aria-label="Go to slide 1"></button>
+            <button class="slider-dot" type="button" aria-label="Go to slide 2"></button>
+            <button class="slider-dot" type="button" aria-label="Go to slide 3"></button>
+            <button class="slider-dot" type="button" aria-label="Go to slide 4"></button>
           </div>
         </div>
       </div>
@@ -347,10 +350,10 @@
       <div class="split-section reveal">
         <div class="split-visual">
           <div class="split-img-main">
-            <img src="assets/images/premium-online/toronto-night-cn.jpg" alt="Toronto skyline at night with CN Tower" loading="lazy" decoding="async">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/images/premium-online/toronto-night-cn.jpg" data-deferred-image alt="Toronto skyline at night with CN Tower" width="1600" height="1280" loading="lazy" decoding="async">
           </div>
           <div class="split-img-accent">
-            <img src="assets/images/premium-online/spring-couple-city.jpg" alt="Couple walking through a vibrant Canadian city street" loading="lazy" decoding="async">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/images/premium-online/spring-couple-city.jpg" data-deferred-image alt="Couple walking through a vibrant Canadian city street" width="1600" height="2400" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="split-content">
@@ -379,7 +382,7 @@
       <div class="split-section reverse reveal">
         <div class="split-visual">
           <div class="split-img-main ceo-portrait">
-            <img src="assets/huma.webp" alt="Huma Tahir, Founder and CEO" loading="lazy" decoding="async">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/huma.webp" data-deferred-image alt="Huma Tahir, Founder and CEO" width="1086" height="1448" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="split-content">
@@ -407,22 +410,22 @@
       <div class="process-grid">
         <div class="process-step reveal">
           <div class="process-num">01</div>
-          <h4>Initial Consultation</h4>
+          <h3>Initial Consultation</h3>
           <p>Discuss your goals, timeline, and eligibility in a confidential one-on-one session.</p>
         </div>
         <div class="process-step reveal reveal-d2">
           <div class="process-num">02</div>
-          <h4>Personalised Plan</h4>
+          <h3>Personalised Plan</h3>
           <p>Receive a tailored roadmap covering immigration pathway, documents, and timeline.</p>
         </div>
         <div class="process-step reveal reveal-d3">
           <div class="process-num">03</div>
-          <h4>Application Support</h4>
+          <h3>Application Support</h3>
           <p>Our team guides every document, form, and submission step with expert review.</p>
         </div>
         <div class="process-step reveal reveal-d4">
           <div class="process-num">04</div>
-          <h4>Arrive & Integrate</h4>
+          <h3>Arrive & Integrate</h3>
           <p>Post-arrival services ensure housing, banking, education, and career are in order.</p>
         </div>
       </div>
@@ -439,33 +442,33 @@
       </div>
       <div class="features-grid">
         <div class="feature-card reveal">
-          <div class="feat-icon"><img src="assets/icons/personalized-plans.svg" alt=""></div>
-          <h4>Personalised Plans</h4>
+          <div class="feat-icon"><img src="assets/icons/personalized-plans.svg" alt="" width="50" height="50"></div>
+          <h3>Personalised Plans</h3>
           <p>One-on-one guidance tailored to your specific needs, goals, and circumstances.</p>
         </div>
         <div class="feature-card reveal reveal-d1">
-          <div class="feat-icon"><img src="assets/icons/virtual-services.svg" alt=""></div>
-          <h4>Global Virtual Services</h4>
+          <div class="feat-icon"><img src="assets/icons/virtual-services.svg" alt="" width="50" height="50"></div>
+          <h3>Global Virtual Services</h3>
           <p>Access support from anywhere in the world through secure virtual consultations.</p>
         </div>
         <div class="feature-card reveal reveal-d2">
-          <div class="feat-icon"><img src="assets/icons/physical-presence.svg" alt=""></div>
-          <h4>Physical Presence</h4>
+          <div class="feat-icon"><img src="assets/icons/physical-presence.svg" alt="" width="50" height="50"></div>
+          <h3>Physical Presence</h3>
           <p>On-ground support in Greater Toronto Area and Islamabad for in-person help.</p>
         </div>
         <div class="feature-card reveal reveal-d3">
-          <div class="feat-icon"><img src="assets/icons/experienced-team.svg" alt=""></div>
-          <h4>Experienced Team</h4>
+          <div class="feat-icon"><img src="assets/icons/experienced-team.svg" alt="" width="50" height="50"></div>
+          <h3>Experienced Team</h3>
           <p>Over 25 years of experience in settlement support with deep knowledge of the journey.</p>
         </div>
         <div class="feature-card reveal reveal-d4">
-          <div class="feat-icon"><img src="assets/icons/ethical.svg" alt=""></div>
-          <h4>Ethical & Transparent</h4>
+          <div class="feat-icon"><img src="assets/icons/ethical.svg" alt="" width="50" height="50"></div>
+          <h3>Ethical & Transparent</h3>
           <p>Cultural sensitivity and honest service built on empathy, integrity, and trust.</p>
         </div>
         <div class="feature-card reveal reveal-d5">
-          <div class="feat-icon"><img src="assets/icons/end-to-end.svg" alt=""></div>
-          <h4>End-to-End Coverage</h4>
+          <div class="feat-icon"><img src="assets/icons/end-to-end.svg" alt="" width="50" height="50"></div>
+          <h3>End-to-End Coverage</h3>
           <p>Complete support from pre-arrival planning through post-arrival settlement and integration.</p>
         </div>
       </div>
@@ -484,77 +487,84 @@
         <div class="slides">
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="Your Hassle-Free Canada Journey video guide">
                 <source data-src="assets/videos/hassle-free-canada-journey.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/hassle-free-canada-journey.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>Your Hassle-Free Canada Journey</h4>
+                <h3>Your Hassle-Free Canada Journey</h3>
                 <p>A complete overview of the newcomer process from planning through smooth settlement.</p>
               </div>
             </div>
           </article>
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="Home Setup Essentials video guide">
                 <source data-src="assets/videos/home-final.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/home-final.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>Home Setup Essentials</h4>
+                <h3>Home Setup Essentials</h3>
                 <p>Learn how to prepare key documents, housing basics, and a stable first-week routine.</p>
               </div>
             </div>
           </article>
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="Immigration Pathway Guide video guide">
                 <source data-src="assets/videos/immigration-final.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/immigration-final.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>Immigration Pathway Guide</h4>
+                <h3>Immigration Pathway Guide</h3>
                 <p>Understand immigration routes and how to select the stream that fits your profile.</p>
               </div>
             </div>
           </article>
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="Pre-Arrival Preparation video guide">
                 <source data-src="assets/videos/pre-arrival-final.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/pre-arrival-final.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>Pre-Arrival Preparation</h4>
+                <h3>Pre-Arrival Preparation</h3>
                 <p>Build a practical pre-arrival checklist for finance, travel, and document readiness.</p>
               </div>
             </div>
           </article>
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="Post-Arrival Action Plan video guide">
                 <source data-src="assets/videos/post-arrival-final.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/post-arrival-final.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>Post-Arrival Action Plan</h4>
+                <h3>Post-Arrival Action Plan</h3>
                 <p>Steps to complete after landing, including banking, healthcare, and local orientation.</p>
               </div>
             </div>
           </article>
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="Common Newcomer Mistakes video guide">
                 <source data-src="assets/videos/newcomer-mistakes-final.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/newcomer-mistakes-final.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>Common Newcomer Mistakes</h4>
+                <h3>Common Newcomer Mistakes</h3>
                 <p>Avoid frequent early mistakes and follow proven decisions for a stronger first year.</p>
               </div>
             </div>
           </article>
           <article class="slide">
             <div class="video-slide-card">
-              <video class="video-frame" controls preload="none" data-deferred-video>
+              <video class="video-frame" controls preload="none" data-deferred-video aria-label="How We Support You video guide">
                 <source data-src="assets/videos/contact-us-final.mp4" type="video/mp4">
+                <track kind="captions" srclang="en" label="English captions" src="assets/videos/captions/contact-us-final.en.vtt" default>
               </video>
               <div class="video-card-body">
-                <h4>How We Support You</h4>
+                <h3>How We Support You</h3>
                 <p>See how consultations work and how our team supports each stage of your move.</p>
               </div>
             </div>
@@ -585,7 +595,7 @@
       </div>
       <div class="gallery-showcase reveal">
         <article class="gallery-item gallery-feature">
-          <img class="gallery-image-focus-mid" src="assets/Banff.webp" alt="Turquoise lake in Banff National Park" loading="lazy">
+          <img class="gallery-image-focus-mid" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Banff.webp" data-deferred-image alt="Turquoise lake in Banff National Park" width="1672" height="941" loading="lazy" decoding="async">
           <div class="gallery-caption">
             <span class="gallery-tag">Mountain Escapes</span>
             <h3>Canada Beyond the Cities</h3>
@@ -595,28 +605,28 @@
 
         <div class="gallery-rail">
           <article class="gallery-item gallery-rail-item">
-            <img src="assets/Vancouver-1.jpg" alt="Scenic mountain lookout in Vancouver" loading="lazy">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Vancouver-1.jpg" data-deferred-image alt="Scenic mountain lookout in Vancouver" width="1392" height="928" loading="lazy" decoding="async">
             <div class="gallery-mini-caption">West Coast Views</div>
           </article>
           <article class="gallery-item gallery-rail-item">
-            <img class="gallery-image-focus-top" src="assets/Edmonton%20Mall.webp" alt="Indoor family attractions at West Edmonton Mall" loading="lazy">
+            <img class="gallery-image-focus-top" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/Edmonton%20Mall.webp" data-deferred-image alt="Indoor family attractions at West Edmonton Mall" width="1677" height="938" loading="lazy" decoding="async">
             <div class="gallery-mini-caption">Family Attractions</div>
           </article>
         </div>
 
         <div class="gallery-carousel" aria-label="Canadian life highlights">
           <article class="gallery-item gallery-chip">
-            <img src="assets/images/premium-online/spring-couple-city.jpg" alt="Couple enjoying life in a Canadian city" loading="lazy">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/images/premium-online/spring-couple-city.jpg" data-deferred-image alt="Couple enjoying life in a Canadian city" width="1600" height="2400" loading="lazy" decoding="async">
             <div class="gallery-mini-caption">Spring Streets</div>
           </article>
           <article class="gallery-item gallery-chip">
-            <img src="assets/images/premium-online/urban-fountain-woman.jpg" alt="Newcomer lifestyle in downtown Toronto" loading="lazy">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="assets/images/premium-online/urban-fountain-woman.jpg" data-deferred-image alt="Newcomer lifestyle in downtown Toronto" width="1600" height="2400" loading="lazy" decoding="async">
             <div class="gallery-mini-caption">Downtown Confidence</div>
           </article>
           <article class="gallery-item gallery-chip gallery-chip-copy">
             <div class="gallery-copy-block">
               <span class="gallery-tag">New Chapter</span>
-              <h4>Designed For Your First 12 Months</h4>
+              <h3>Designed For Your First 12 Months</h3>
               <p>From arrival basics to building community, we help you settle with clarity and momentum.</p>
             </div>
           </article>
@@ -777,7 +787,7 @@
     <div class="container">
       <div class="footer-modern-wrap">
         <a href="index.html" class="footer-modern-logo" aria-label="Newcomer Connect">
-          <img src="assets/icons/logo-real.png" alt="Newcomer Connect">
+          <img src="assets/icons/logo-real.png" alt="Newcomer Connect" width="320" height="130" loading="lazy" decoding="async" fetchpriority="low">
           <span>Newcomer<br>Connect</span>
         </a>
         <h2 class="footer-modern-title">Plan with clarity. Arrive with confidence.</h2>
@@ -803,7 +813,7 @@
     </div>
   </footer>
 
-  <script src="js/script.js?v=20260421-home-logo"></script>
+  <script src="js/script.min.js?v=20260425-home-perf"></script>
 </body>
 </html>
 

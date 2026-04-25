@@ -10,10 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initMobileMenu();
   initScrollReveal();
-  initSiteLeafRain();
-  initHeroLeafRain();
-  initParallaxMedia();
-  initGalleryAutoScroll();
+  initDeferredImages();
   initSliders();
   initDeferredVideos();
   initCounters();
@@ -21,7 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initContactFormSwitcher();
   initReviewForms();
-  loadApprovedReviews();
+  scheduleNonCriticalWork(() => {
+    initSiteLeafRain();
+    initHeroLeafRain();
+    initParallaxMedia();
+    initGalleryAutoScroll();
+    scheduleApprovedReviews();
+  }, 1200);
 });
 
 window.addEventListener('pageshow', () => {
@@ -34,6 +37,17 @@ function getStoredTheme() {
   } catch (error) {
     return null;
   }
+}
+
+function scheduleNonCriticalWork(callback, timeout = 800) {
+  if (typeof callback !== 'function') return;
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => callback(), { timeout });
+    return;
+  }
+
+  window.setTimeout(callback, Math.min(timeout, 300));
 }
 
 function syncThemeState() {
@@ -97,12 +111,72 @@ function initThemeToggle() {
 
 function applyThemeLogoAssets() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const logoSrc = isDark ? 'assets/icons/Logo-real-dark.png?v=20260421' : 'assets/icons/logo-real.png?v=20260421';
 
   document.querySelectorAll('.logo img, .footer-modern-logo img').forEach((img) => {
-    img.src = logoSrc;
+    const lightSrc = img.getAttribute('data-light-src') || 'assets/icons/logo-real.png';
+    const darkSrc = img.getAttribute('data-dark-src') || 'assets/icons/Logo-real-dark.png';
+    const lightSrcset = img.getAttribute('data-light-srcset') || '';
+    const darkSrcset = img.getAttribute('data-dark-srcset') || '';
+    const logoSrc = isDark ? darkSrc : lightSrc;
+    const logoSrcset = isDark ? darkSrcset : lightSrcset;
+    const targetPath = new URL(logoSrc, window.location.href).pathname;
+    const currentPath = new URL(img.getAttribute('src') || img.src, window.location.href).pathname;
+
+    if (currentPath !== targetPath) {
+      img.src = logoSrc;
+    }
+
+    if (logoSrcset) {
+      if (img.getAttribute('srcset') !== logoSrcset) {
+        img.srcset = logoSrcset;
+      }
+    } else if (img.hasAttribute('srcset')) {
+      img.removeAttribute('srcset');
+    }
+
     img.alt = 'Newcomer Connect';
   });
+}
+
+function loadDeferredImage(image) {
+  if (!(image instanceof HTMLImageElement)) return;
+  if (image.dataset.imageLoaded === '1') return;
+
+  const deferredSrc = image.getAttribute('data-src');
+  if (deferredSrc) {
+    image.src = deferredSrc;
+    image.removeAttribute('data-src');
+  }
+
+  const deferredSrcset = image.getAttribute('data-srcset');
+  if (deferredSrcset) {
+    image.srcset = deferredSrcset;
+    image.removeAttribute('data-srcset');
+  }
+
+  image.dataset.imageLoaded = '1';
+}
+
+function loadDeferredImagesWithin(root) {
+  if (!root) return;
+  root.querySelectorAll('img[data-deferred-image]').forEach((image) => {
+    loadDeferredImage(image);
+  });
+}
+
+function initDeferredImages() {
+  const deferredImages = Array.from(document.querySelectorAll('img[data-deferred-image]'));
+  if (!deferredImages.length) return;
+
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadDeferredImage(entry.target);
+      imageObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: '300px 0px' });
+
+  deferredImages.forEach((image) => imageObserver.observe(image));
 }
 
 function loadDeferredVideo(video) {
@@ -194,8 +268,8 @@ function initDeferredVideos() {
 /*  GLOBAL MAPLE LEAF RAIN  */
 function initSiteLeafRain() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  if (prefersReducedMotion) return;
+  const isLowPowerViewport = window.matchMedia('(max-width: 900px)').matches;
+  if (prefersReducedMotion || isLowPowerViewport) return;
 
   const existing = document.querySelector('.site-leaf-rain');
   if (existing) return;
@@ -205,19 +279,19 @@ function initSiteLeafRain() {
   layer.setAttribute('aria-hidden', 'true');
   document.body.appendChild(layer);
 
-  const leafCount = isMobile ? 10 : 22;
+  const leafCount = 22;
   const leafSrc = 'assets/images/maple-leaf-transparent.png';
   const frag = document.createDocumentFragment();
 
   for (let i = 0; i < leafCount; i += 1) {
     const leaf = document.createElement('img');
-    const size = (isMobile ? 14 : 18) + Math.random() * (isMobile ? 14 : 26);
-    const scale = (isMobile ? 0.56 : 0.68) + Math.random() * (isMobile ? 0.34 : 0.6);
-    const drift = (isMobile ? -70 : -110) + Math.random() * (isMobile ? 140 : 220);
-    const duration = (isMobile ? 9 : 12) + Math.random() * (isMobile ? 9 : 13);
+    const size = 18 + Math.random() * 26;
+    const scale = 0.68 + Math.random() * 0.6;
+    const drift = -110 + Math.random() * 220;
+    const duration = 12 + Math.random() * 13;
     const delay = -Math.random() * duration;
     const rotateStart = -80 + Math.random() * 160;
-    const rotateEnd = rotateStart + (isMobile ? 320 : 420) + Math.random() * (isMobile ? 180 : 260);
+    const rotateEnd = rotateStart + 420 + Math.random() * 260;
 
     leaf.className = 'site-leaf';
     leaf.src = leafSrc;
@@ -231,7 +305,7 @@ function initSiteLeafRain() {
     leaf.style.setProperty('--leaf-delay', `${delay.toFixed(2)}s`);
     leaf.style.setProperty('--leaf-rotate-start', `${rotateStart.toFixed(1)}deg`);
     leaf.style.setProperty('--leaf-rotate-end', `${rotateEnd.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-opacity', `${((isMobile ? 0.18 : 0.24) + Math.random() * (isMobile ? 0.22 : 0.34)).toFixed(2)}`);
+    leaf.style.setProperty('--leaf-opacity', `${(0.24 + Math.random() * 0.34).toFixed(2)}`);
 
     frag.appendChild(leaf);
   }
@@ -249,22 +323,22 @@ function initHeroLeafRain() {
   if (rainLayer.children.length) return;
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+  const isLowPowerViewport = window.matchMedia('(max-width: 900px)').matches;
+  if (prefersReducedMotion || isLowPowerViewport) return;
 
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const leafCount = isMobile ? 8 : 18;
+  const leafCount = 18;
   const leafSrc = 'assets/images/maple-leaf-transparent.png';
   const frag = document.createDocumentFragment();
 
   for (let i = 0; i < leafCount; i += 1) {
     const leaf = document.createElement('img');
-    const size = (isMobile ? 16 : 22) + Math.random() * (isMobile ? 16 : 30);
-    const scale = (isMobile ? 0.62 : 0.75) + Math.random() * (isMobile ? 0.34 : 0.65);
-    const drift = (isMobile ? -56 : -90) + Math.random() * (isMobile ? 112 : 180);
-    const duration = (isMobile ? 9 : 11) + Math.random() * (isMobile ? 8 : 12);
+    const size = 22 + Math.random() * 30;
+    const scale = 0.75 + Math.random() * 0.65;
+    const drift = -90 + Math.random() * 180;
+    const duration = 11 + Math.random() * 12;
     const delay = -Math.random() * duration;
     const rotateStart = -60 + Math.random() * 120;
-    const rotateEnd = rotateStart + (isMobile ? 320 : 420) + Math.random() * (isMobile ? 160 : 260);
+    const rotateEnd = rotateStart + 420 + Math.random() * 260;
 
     leaf.className = 'hero-leaf';
     leaf.src = leafSrc;
@@ -278,7 +352,7 @@ function initHeroLeafRain() {
     leaf.style.setProperty('--leaf-delay', `${delay.toFixed(2)}s`);
     leaf.style.setProperty('--leaf-rotate-start', `${rotateStart.toFixed(1)}deg`);
     leaf.style.setProperty('--leaf-rotate-end', `${rotateEnd.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-opacity', `${((isMobile ? 0.24 : 0.35) + Math.random() * (isMobile ? 0.24 : 0.5)).toFixed(2)}`);
+    leaf.style.setProperty('--leaf-opacity', `${(0.35 + Math.random() * 0.5).toFixed(2)}`);
 
     frag.appendChild(leaf);
   }
@@ -345,7 +419,8 @@ function initParallaxMedia() {
 /*  GALLERY AUTO SCROLL  */
 function initGalleryAutoScroll() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+  const isLowPowerViewport = window.matchMedia('(max-width: 900px)').matches;
+  if (prefersReducedMotion || isLowPowerViewport) return;
 
   document.querySelectorAll('.gallery-carousel').forEach((strip) => {
     if (strip.scrollWidth <= strip.clientWidth + 8) return;
@@ -462,13 +537,35 @@ function initCounters() {
 function initSliders() {
   document.querySelectorAll('.slider[data-slider]').forEach(slider => {
     const track = slider.querySelector('.slides');
-    const dots  = slider.querySelectorAll('.slider-dot');
+    const dotsWrap = slider.querySelector('.slider-dots');
     const prev  = slider.querySelector('.slider-control.prev');
     const next  = slider.querySelector('.slider-control.next');
     if (!track) return;
 
     const slides = slider.querySelectorAll('.slide');
     const total   = slides.length;
+    const dotLabel = slider.classList.contains('video-carousel') ? 'video' : 'slide';
+    let dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.slider-dot')) : [];
+
+    if (dotsWrap && dots.length !== total) {
+      dotsWrap.innerHTML = '';
+      for (let i = 0; i < total; i += 1) {
+        const dot = document.createElement('button');
+        dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Go to ${dotLabel} ${i + 1}`);
+        dotsWrap.appendChild(dot);
+      }
+      dots = Array.from(dotsWrap.querySelectorAll('.slider-dot'));
+    } else {
+      dots.forEach((dot, index) => {
+        dot.setAttribute('type', 'button');
+        if (!dot.getAttribute('aria-label')) {
+          dot.setAttribute('aria-label', `Go to ${dotLabel} ${index + 1}`);
+        }
+      });
+    }
+
     let current   = 0;
     let autoInterval = null;
     let canLoadActiveVideo = !slider.classList.contains('video-carousel');
@@ -493,6 +590,10 @@ function initSliders() {
       const sliderWidth = slider.clientWidth;
       track.style.transform = `translateX(-${current * sliderWidth}px)`;
       dots.forEach((d, i) => d.classList.toggle('active', i === current));
+
+      if (slider.getBoundingClientRect().top <= ((window.innerHeight || 0) + 300)) {
+        loadDeferredImagesWithin(slides[current]);
+      }
 
       // Prevent overlapping audio when slider includes video elements.
       slider.querySelectorAll('video').forEach((videoEl) => {
@@ -536,6 +637,26 @@ function initSliders() {
     startAuto();
     goTo(0);
   });
+}
+
+function scheduleApprovedReviews() {
+  const target = document.querySelector('[data-review-feed]');
+  if (!target) return;
+
+  if (!('IntersectionObserver' in window)) {
+    scheduleNonCriticalWork(() => loadApprovedReviews(), 800);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      scheduleNonCriticalWork(() => loadApprovedReviews(), 800);
+    });
+  }, { rootMargin: '300px 0px' });
+
+  observer.observe(target);
 }
 
 /*  FAQ ACCORDION  */
