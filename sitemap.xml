@@ -12,66 +12,6 @@
     </image:image>
   </url>
   <url>
-    <url>
-      <loc>https://newcomerconnect.ca/express-entry-2026-changes-canada.html</loc>
-      <lastmod>2026-04-25</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.75</priority>
-      <image:image>
-        <image:loc>https://newcomerconnect.ca/assets/images/premium-online/toronto-sign-square.jpg</image:loc>
-        <image:title>Express Entry in 2026 Article</image:title>
-      </image:image>
-    </url>
-    <url>
-      <loc>https://newcomerconnect.ca/first-30-days-canada-checklist.html</loc>
-      <lastmod>2026-04-25</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.75</priority>
-      <image:image>
-        <image:loc>https://newcomerconnect.ca/assets/images/premium-online/spring-couple-city.jpg</image:loc>
-        <image:title>First 30 Days in Canada Checklist</image:title>
-      </image:image>
-    </url>
-    <url>
-      <loc>https://newcomerconnect.ca/rental-scams-canada-newcomers.html</loc>
-      <lastmod>2026-04-25</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.75</priority>
-      <image:image>
-        <image:loc>https://newcomerconnect.ca/assets/images/canada/toronto-city-hall.jpg</image:loc>
-        <image:title>Rental Scams in Canada Article</image:title>
-      </image:image>
-    </url>
-    <url>
-      <loc>https://newcomerconnect.ca/credential-recognition-canada-newcomers.html</loc>
-      <lastmod>2026-04-25</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.7</priority>
-      <image:image>
-        <image:loc>https://newcomerconnect.ca/assets/images/premium-online/urban-fountain-woman.jpg</image:loc>
-        <image:title>Credential Recognition Article</image:title>
-      </image:image>
-    </url>
-    <url>
-      <loc>https://newcomerconnect.ca/build-credit-history-canada.html</loc>
-      <lastmod>2026-04-25</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.7</priority>
-      <image:image>
-        <image:loc>https://newcomerconnect.ca/assets/images/premium-online/toronto-day.jpg</image:loc>
-        <image:title>Build Credit History in Canada Article</image:title>
-      </image:image>
-    </url>
-    <url>
-      <loc>https://newcomerconnect.ca/school-enrollment-canada-newcomers.html</loc>
-      <lastmod>2026-04-25</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.75</priority>
-      <image:image>
-        <image:loc>https://newcomerconnect.ca/assets/images/canada/canadian-spring-walk.jpg</image:loc>
-        <image:title>School Enrollment in Canada Article</image:title>
-      </image:image>
-    </url>
     <loc>https://newcomerconnect.ca/services.html</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -79,6 +19,66 @@
     <image:image>
       <image:loc>https://newcomerconnect.ca/assets/images/toronto-cityscape.jpg</image:loc>
       <image:title>Immigration and Settlement Services</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/express-entry-2026-changes-canada.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/premium-online/toronto-sign-square.jpg</image:loc>
+      <image:title>Express Entry in 2026 Article</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/first-30-days-canada-checklist.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/premium-online/spring-couple-city.jpg</image:loc>
+      <image:title>First 30 Days in Canada Checklist</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/rental-scams-canada-newcomers.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/canada/toronto-city-hall.jpg</image:loc>
+      <image:title>Rental Scams in Canada Article</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/credential-recognition-canada-newcomers.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/premium-online/urban-fountain-woman.jpg</image:loc>
+      <image:title>Credential Recognition Article</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/build-credit-history-canada.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/premium-online/toronto-day.jpg</image:loc>
+      <image:title>Build Credit History in Canada Article</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/school-enrollment-canada-newcomers.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/canada/canadian-spring-walk.jpg</image:loc>
+      <image:title>School Enrollment in Canada Article</image:title>
     </image:image>
   </url>
   <url>
@@ -215,6 +215,16 @@
     <image:image>
       <image:loc>https://newcomerconnect.ca/assets/images/canada/toronto-city-hall.jpg</image:loc>
       <image:title>Newcomer Housing Support in Canada</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://newcomerconnect.ca/housing-home-financing-solutions.html</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://newcomerconnect.ca/assets/images/premium-online/toronto-day.jpg</image:loc>
+      <image:title>Housing and Home Financing Solutions in Canada</image:title>
     </image:image>
   </url>
   <url>
