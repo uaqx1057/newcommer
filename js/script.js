@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactFormSwitcher();
   initReviewForms();
   scheduleNonCriticalWork(() => {
-    initSiteLeafRain();
     initHeroLeafRain();
     initParallaxMedia();
     initGalleryAutoScroll();
@@ -71,17 +70,31 @@ function initThemeToggle() {
 
   if (!switcher) return;
 
-  if (!switcher.querySelector('ion-icon')) {
-    switcher.innerHTML = `<ion-icon class="theme-switcher-icon" aria-hidden="true"></ion-icon>`;
+  const moonIconMarkup = '<svg viewBox="0 0 24 24" class="theme-switcher-glyph" aria-hidden="true" focusable="false"><path d="M20.5 15.3A8.5 8.5 0 0 1 8.7 3.5a9 9 0 1 0 11.8 11.8Z" fill="currentColor"/></svg>';
+  const sunIconMarkup = '<svg viewBox="0 0 24 24" class="theme-switcher-glyph" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.25" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.5M12 19v2.5M21.5 12H19M5 12H2.5M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8M18.7 18.7l-1.8-1.8M7.1 7.1 5.3 5.3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/></svg>';
+
+  let iconHost = switcher.querySelector('.theme-switcher-icon');
+  if (!iconHost) {
+    const legacyIonIcon = switcher.querySelector('ion-icon');
+    if (legacyIonIcon) {
+      legacyIonIcon.classList.add('theme-switcher-icon');
+      iconHost = legacyIonIcon;
+    } else {
+      switcher.innerHTML = '<span class="theme-switcher-icon" aria-hidden="true"></span>';
+      iconHost = switcher.querySelector('.theme-switcher-icon');
+    }
   }
-  const icon = switcher.querySelector('ion-icon');
 
   const setToggleState = () => {
     const isDark = root.getAttribute('data-theme') === 'dark';
     switcher.setAttribute('aria-pressed', String(isDark));
     switcher.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-    if (icon) {
-      icon.setAttribute('name', isDark ? 'sunny-outline' : 'moon-outline');
+    if (iconHost instanceof Element) {
+      if (iconHost.tagName === 'ION-ICON') {
+        iconHost.setAttribute('name', isDark ? 'sunny-outline' : 'moon-outline');
+      } else {
+        iconHost.innerHTML = isDark ? sunIconMarkup : moonIconMarkup;
+      }
     }
     applyThemeLogoAssets();
   };
@@ -113,8 +126,11 @@ function applyThemeLogoAssets() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
   document.querySelectorAll('.logo img, .footer-modern-logo img').forEach((img) => {
-    const lightSrc = img.getAttribute('data-light-src') || 'assets/icons/logo-real.png';
-    const darkSrc = img.getAttribute('data-dark-src') || 'assets/icons/Logo-real-dark.png';
+    const isFooterLogo = Boolean(img.closest('.footer-modern-logo'));
+    const defaultLightSrc = isFooterLogo ? 'assets/icons/footer-logo-light.png' : 'assets/icons/logo-real.png';
+    const defaultDarkSrc = isFooterLogo ? 'assets/icons/footer-logo-dark.png' : 'assets/icons/logo-real-dark.png';
+    const lightSrc = img.getAttribute('data-light-src') || defaultLightSrc;
+    const darkSrc = img.getAttribute('data-dark-src') || defaultDarkSrc;
     const lightSrcset = img.getAttribute('data-light-srcset') || '';
     const darkSrcset = img.getAttribute('data-dark-srcset') || '';
     const logoSrc = isDark ? darkSrc : lightSrc;
@@ -183,14 +199,14 @@ function loadDeferredVideo(video) {
   if (!(video instanceof HTMLVideoElement)) return;
   if (video.dataset.videoLoaded === '1') return;
 
-  const deferredSources = Array.from(video.querySelectorAll('source[data-src]'));
-  if (!deferredSources.length) return;
+  const deferredMedia = Array.from(video.querySelectorAll('source[data-src], track[data-src]'));
+  if (!deferredMedia.length) return;
 
-  deferredSources.forEach((source) => {
-    const deferredSrc = source.getAttribute('data-src');
+  deferredMedia.forEach((node) => {
+    const deferredSrc = node.getAttribute('data-src');
     if (!deferredSrc) return;
-    source.src = deferredSrc;
-    source.removeAttribute('data-src');
+    node.src = deferredSrc;
+    node.removeAttribute('data-src');
   });
 
   video.dataset.videoLoaded = '1';
@@ -267,54 +283,13 @@ function initDeferredVideos() {
 
 /*  GLOBAL MAPLE LEAF RAIN  */
 function initSiteLeafRain() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isLowPowerViewport = window.matchMedia('(max-width: 900px)').matches;
-  if (prefersReducedMotion || isLowPowerViewport) return;
-
-  const existing = document.querySelector('.site-leaf-rain');
-  if (existing) return;
-
-  const layer = document.createElement('div');
-  layer.className = 'site-leaf-rain';
-  layer.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(layer);
-
-  const leafCount = 22;
-  const leafSrc = 'assets/images/maple-leaf-transparent.png';
-  const frag = document.createDocumentFragment();
-
-  for (let i = 0; i < leafCount; i += 1) {
-    const leaf = document.createElement('img');
-    const size = 18 + Math.random() * 26;
-    const scale = 0.68 + Math.random() * 0.6;
-    const drift = -110 + Math.random() * 220;
-    const duration = 12 + Math.random() * 13;
-    const delay = -Math.random() * duration;
-    const rotateStart = -80 + Math.random() * 160;
-    const rotateEnd = rotateStart + 420 + Math.random() * 260;
-
-    leaf.className = 'site-leaf';
-    leaf.src = leafSrc;
-    leaf.alt = '';
-    leaf.decoding = 'async';
-    leaf.style.left = `${Math.random() * 100}%`;
-    leaf.style.setProperty('--leaf-size', `${size.toFixed(1)}px`);
-    leaf.style.setProperty('--leaf-scale', scale.toFixed(2));
-    leaf.style.setProperty('--leaf-drift', `${drift.toFixed(1)}px`);
-    leaf.style.setProperty('--leaf-fall-duration', `${duration.toFixed(2)}s`);
-    leaf.style.setProperty('--leaf-delay', `${delay.toFixed(2)}s`);
-    leaf.style.setProperty('--leaf-rotate-start', `${rotateStart.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-rotate-end', `${rotateEnd.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-opacity', `${(0.24 + Math.random() * 0.34).toFixed(2)}`);
-
-    frag.appendChild(leaf);
-  }
-
-  layer.appendChild(frag);
+  return;
 }
 
 /*  HERO MAPLE LEAF RAIN  */
 function initHeroLeafRain() {
+  if (!document.body.classList.contains('home-page')) return;
+
   const hero = document.querySelector('.hero');
   if (!hero) return;
 
@@ -326,16 +301,16 @@ function initHeroLeafRain() {
   const isLowPowerViewport = window.matchMedia('(max-width: 900px)').matches;
   if (prefersReducedMotion || isLowPowerViewport) return;
 
-  const leafCount = 18;
-  const leafSrc = 'assets/images/maple-leaf-transparent.png';
+  const leafCount = 14;
+  const leafSrc = 'assets/images/maple-leaf-home.png';
   const frag = document.createDocumentFragment();
 
   for (let i = 0; i < leafCount; i += 1) {
     const leaf = document.createElement('img');
-    const size = 22 + Math.random() * 30;
-    const scale = 0.75 + Math.random() * 0.65;
-    const drift = -90 + Math.random() * 180;
-    const duration = 11 + Math.random() * 12;
+    const size = 24 + Math.random() * 22;
+    const scale = 0.8 + Math.random() * 0.34;
+    const drift = -96 + Math.random() * 192;
+    const duration = 12 + Math.random() * 7;
     const delay = -Math.random() * duration;
     const rotateStart = -60 + Math.random() * 120;
     const rotateEnd = rotateStart + 420 + Math.random() * 260;
@@ -352,12 +327,23 @@ function initHeroLeafRain() {
     leaf.style.setProperty('--leaf-delay', `${delay.toFixed(2)}s`);
     leaf.style.setProperty('--leaf-rotate-start', `${rotateStart.toFixed(1)}deg`);
     leaf.style.setProperty('--leaf-rotate-end', `${rotateEnd.toFixed(1)}deg`);
-    leaf.style.setProperty('--leaf-opacity', `${(0.35 + Math.random() * 0.5).toFixed(2)}`);
+    leaf.style.setProperty('--leaf-opacity', `${(0.3 + Math.random() * 0.22).toFixed(2)}`);
 
     frag.appendChild(leaf);
   }
 
   rainLayer.appendChild(frag);
+
+  const updateLeafFade = () => {
+    const viewportHeight = window.innerHeight || 1;
+    const fadeDistance = Math.max(viewportHeight * 0.95, 560);
+    const fadeProgress = Math.min(window.scrollY / fadeDistance, 1);
+    const fadeValue = Math.max(0, 1 - fadeProgress);
+    rainLayer.style.setProperty('--leaf-scroll-opacity', fadeValue.toFixed(3));
+  };
+
+  updateLeafFade();
+  window.addEventListener('scroll', updateLeafFade, { passive: true });
 }
 
 /*  PARALLAX MEDIA  */
@@ -517,8 +503,20 @@ function initCounters() {
       if (!e.isIntersecting) return;
       const el  = e.target;
       const end = parseInt(el.getAttribute('data-count'), 10);
-      const suffix = el.textContent.replace(/[0-9]/g, '').trim();
-      let start = 0;
+      if (!Number.isFinite(end)) {
+        observer.unobserve(el);
+        return;
+      }
+
+      const initialValue = parseInt(el.textContent, 10);
+      let start = Number.isFinite(initialValue) ? initialValue : 0;
+
+      if (start >= end) {
+        el.textContent = `${end}${end >= 25 && end <= 500 ? '+' : ''}`;
+        observer.unobserve(el);
+        return;
+      }
+
       const duration = 1800;
       const step = Math.ceil(end / (duration / 16));
       const tick = () => {
@@ -569,8 +567,31 @@ function initSliders() {
     let current   = 0;
     let autoInterval = null;
     let canLoadActiveVideo = !slider.classList.contains('video-carousel');
+    let sliderImagesPrimed = slider.getBoundingClientRect().top <= ((window.innerHeight || 0) + 300);
     const delay = parseInt(slider.getAttribute('data-autoplay') || '4500', 10);
     const autoplayEnabled = Number.isFinite(delay) && delay > 0;
+    const loadSlideImages = (idx) => {
+      if (!total) return;
+
+      [idx, idx + 1, idx - 1].forEach((candidate) => {
+        loadDeferredImagesWithin(slides[(candidate + total) % total]);
+      });
+    };
+
+    if (!sliderImagesPrimed && 'IntersectionObserver' in window) {
+      const imagePrimeObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          sliderImagesPrimed = true;
+          loadSlideImages(current);
+          imagePrimeObserver.unobserve(slider);
+        });
+      }, { rootMargin: '300px 0px' });
+
+      imagePrimeObserver.observe(slider);
+    } else if (sliderImagesPrimed) {
+      loadSlideImages(current);
+    }
 
     if (!canLoadActiveVideo) {
       const viewObserver = new IntersectionObserver((entries) => {
@@ -591,8 +612,12 @@ function initSliders() {
       track.style.transform = `translateX(-${current * sliderWidth}px)`;
       dots.forEach((d, i) => d.classList.toggle('active', i === current));
 
-      if (slider.getBoundingClientRect().top <= ((window.innerHeight || 0) + 300)) {
-        loadDeferredImagesWithin(slides[current]);
+      if (!sliderImagesPrimed && slider.getBoundingClientRect().top <= ((window.innerHeight || 0) + 300)) {
+        sliderImagesPrimed = true;
+      }
+
+      if (sliderImagesPrimed) {
+        loadSlideImages(current);
       }
 
       // Prevent overlapping audio when slider includes video elements.
@@ -934,14 +959,14 @@ function createReviewCard(review) {
 
   const avatar = document.createElement('div');
   avatar.className = 't-avatar';
-  const firstLetter = (review.name || 'N').trim().charAt(0) || 'N';
-  avatar.textContent = firstLetter.toUpperCase();
+  const avatarText = (review.avatar_text || review.display_name || review.name || 'NC').trim() || 'NC';
+  avatar.textContent = avatarText.toUpperCase();
 
   const info = document.createElement('div');
   info.className = 't-info';
 
   const strong = document.createElement('strong');
-  strong.textContent = review.name || 'Anonymous Client';
+  strong.textContent = review.display_name || review.name || 'Verified Client';
 
   const city = document.createElement('span');
   city.textContent = review.city || 'Canada';
@@ -970,7 +995,13 @@ async function loadApprovedReviews() {
   const LOCAL_REVIEW_STORAGE_KEY = 'nc_local_reviews_v1';
 
   const appendItems = (target, items, limit) => {
+    const placeholders = Array.from(target.querySelectorAll('[data-review-placeholder]'));
     target.querySelectorAll('.review-card-dynamic').forEach((card) => card.remove());
+
+    if (items.length) {
+      placeholders.forEach((card) => card.remove());
+    }
+
     items.slice(0, limit).forEach((review) => {
       target.appendChild(createReviewCard(review));
     });

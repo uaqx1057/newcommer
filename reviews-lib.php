@@ -142,6 +142,44 @@ function reviews_validate_rating($value) {
     return $rating;
 }
 
+function reviews_build_initials($name) {
+    $name = reviews_sanitize_message($name, 80);
+    if ($name === '') {
+        return 'NC';
+    }
+
+    $parts = preg_split('/\s+/u', $name) ?: [];
+    $letters = [];
+    foreach ($parts as $part) {
+        if ($part === '') {
+            continue;
+        }
+
+        $letter = mb_substr($part, 0, 1, 'UTF-8');
+        $letters[] = mb_strtoupper($letter, 'UTF-8');
+        if (count($letters) === 2) {
+            break;
+        }
+    }
+
+    if (empty($letters)) {
+        return 'NC';
+    }
+
+    return implode('', $letters);
+}
+
+function reviews_build_public_name($record) {
+    $name = (string)($record['name'] ?? '');
+    $allowPublicName = !empty($record['allow_public_name']);
+
+    if ($allowPublicName && $name !== '') {
+        return $name;
+    }
+
+    return reviews_build_initials($name);
+}
+
 function reviews_build_record_from_post($post, $ip) {
     $name = reviews_sanitize_message($post['name'] ?? '', 80);
     $city = reviews_sanitize_message($post['city'] ?? '', 80);
@@ -149,6 +187,7 @@ function reviews_build_record_from_post($post, $ip) {
     $message = reviews_sanitize_message($post['message'] ?? '', 650);
     $emailRaw = trim((string)($post['email'] ?? ''));
     $rating = reviews_validate_rating($post['rating'] ?? 0);
+    $allowPublicName = !empty($post['allow_public_name']);
 
     $errors = [];
 
@@ -195,6 +234,7 @@ function reviews_build_record_from_post($post, $ip) {
         'message' => $message,
         'rating' => $rating,
         'email' => $email,
+        'allow_public_name' => $allowPublicName,
         'status' => 'pending',
         'ip' => $ip,
         'created_at' => $now,
@@ -231,9 +271,13 @@ function reviews_is_rate_limited($pendingRecords, $clientIp, $cooldownSeconds = 
 }
 
 function reviews_get_public_payload($record) {
+    $displayName = reviews_build_public_name($record);
+
     return [
         'id' => (string)($record['id'] ?? ''),
-        'name' => (string)($record['name'] ?? ''),
+        'name' => $displayName,
+        'display_name' => $displayName,
+        'avatar_text' => reviews_build_initials((string)($record['name'] ?? '')),
         'city' => (string)($record['city'] ?? ''),
         'service' => (string)($record['service'] ?? ''),
         'message' => (string)($record['message'] ?? ''),
