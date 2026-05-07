@@ -117,8 +117,8 @@ if ($action === 'send-reminders') {
         exit;
     }
 
-    $adminEmail = nc_get_env_value('ADMIN_EMAIL', 'humatahir1@gmail.com');
-    $supportEmail = nc_get_env_value('SUPPORT_EMAIL', (string) ($smtpConfig['from_email'] ?? 'info@codewithusman.com'));
+    $adminEmail = nc_get_env_value('ADMIN_EMAIL', 'info@newcomerconnect.ca');
+    $supportEmail = nc_get_env_value('SUPPORT_EMAIL', (string) ($smtpConfig['from_email'] ?? 'info@newcomerconnect.ca'));
     $siteUrl = nc_normalize_public_url(nc_get_env_value('SITE_URL', 'https://newcomerconnect.ca'), 'https://newcomerconnect.ca');
 
     if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
@@ -128,7 +128,7 @@ if ($action === 'send-reminders') {
     }
 
     if (!filter_var($supportEmail, FILTER_VALIDATE_EMAIL)) {
-        $supportEmail = (string) ($smtpConfig['from_email'] ?? 'info@codewithusman.com');
+        $supportEmail = (string) ($smtpConfig['from_email'] ?? 'info@newcomerconnect.ca');
     }
 
     $result = bookings_process_due_reminders($smtpConfig, [

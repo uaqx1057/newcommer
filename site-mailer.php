@@ -196,14 +196,14 @@ function nc_get_smtp_config() {
     $fileSmtpConfig = nc_load_local_smtp_config();
 
     return [
-        'host' => nc_get_env_value('SMTP_HOST', $fileSmtpConfig['host'] ?? 'codewithusman.com'),
-        'port' => (int) nc_get_env_value('SMTP_PORT', (string) ($fileSmtpConfig['port'] ?? '465')),
-        'encryption' => strtolower(nc_get_env_value('SMTP_ENCRYPTION', $fileSmtpConfig['encryption'] ?? 'ssl')),
-        'username' => nc_get_env_value('SMTP_USERNAME', $fileSmtpConfig['username'] ?? 'info@codewithusman.com'),
+        'host' => nc_get_env_value('SMTP_HOST', $fileSmtpConfig['host'] ?? 'mail.newcomerconnect.ca'),
+        'port' => (int) nc_get_env_value('SMTP_PORT', (string) ($fileSmtpConfig['port'] ?? '587')),
+        'encryption' => strtolower(nc_get_env_value('SMTP_ENCRYPTION', $fileSmtpConfig['encryption'] ?? 'tls')),
+        'username' => nc_get_env_value('SMTP_USERNAME', $fileSmtpConfig['username'] ?? 'info@newcomerconnect.ca'),
         'password' => nc_get_env_value('SMTP_PASSWORD', $fileSmtpConfig['password'] ?? ''),
-        'from_email' => nc_get_env_value('MAIL_FROM_EMAIL', $fileSmtpConfig['from_email'] ?? 'info@codewithusman.com'),
+        'from_email' => nc_get_env_value('MAIL_FROM_EMAIL', $fileSmtpConfig['from_email'] ?? 'info@newcomerconnect.ca'),
         'from_name' => nc_get_env_value('MAIL_FROM_NAME', $fileSmtpConfig['from_name'] ?? 'Newcomer Connect'),
-        'helo_host' => nc_get_env_value('SMTP_HELO_HOST', $fileSmtpConfig['helo_host'] ?? 'codewithusman.com')
+        'helo_host' => nc_get_env_value('SMTP_HELO_HOST', $fileSmtpConfig['helo_host'] ?? 'newcomerconnect.ca')
     ];
 }
 
@@ -242,7 +242,7 @@ function nc_send_html_email($smtpConfig, $to, $subject, $htmlBody, $replyToEmail
     $password = (string) ($smtpConfig['password'] ?? '');
     $fromEmail = (string) ($smtpConfig['from_email'] ?? '');
     $fromName = (string) ($smtpConfig['from_name'] ?? 'Newcomer Connect');
-    $heloHost = (string) ($smtpConfig['helo_host'] ?? 'codewithusman.com');
+    $heloHost = (string) ($smtpConfig['helo_host'] ?? 'newcomerconnect.ca');
     $replyToHeader = filter_var($replyToEmail, FILTER_VALIDATE_EMAIL) ? $replyToEmail : $fromEmail;
 
     $remoteHost = $encryption === 'ssl' ? ('ssl://' . $host) : $host;

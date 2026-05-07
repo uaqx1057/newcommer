@@ -170,7 +170,7 @@ if (!empty($missingConfig)) {
     exit;
 }
 
-$adminEmail = nc_get_env_value('ADMIN_EMAIL', 'humatahir1@gmail.com');
+$adminEmail = nc_get_env_value('ADMIN_EMAIL', 'info@newcomerconnect.ca');
 if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
     http_response_code(500);
     echo json_encode([
@@ -180,9 +180,9 @@ if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$supportEmail = nc_get_env_value('SUPPORT_EMAIL', 'info@codewithusman.com');
+$supportEmail = nc_get_env_value('SUPPORT_EMAIL', 'info@newcomerconnect.ca');
 if (!filter_var($supportEmail, FILTER_VALIDATE_EMAIL)) {
-    $supportEmail = (string) ($smtpConfig['from_email'] ?? 'info@codewithusman.com');
+    $supportEmail = (string) ($smtpConfig['from_email'] ?? 'info@newcomerconnect.ca');
 }
 
 $siteUrl = nc_normalize_public_url(nc_get_env_value('SITE_URL', 'https://newcomerconnect.ca'), 'https://newcomerconnect.ca');

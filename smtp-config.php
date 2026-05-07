@@ -1,11 +1,11 @@
 <?php
 return [
-  'host' => 'codewithusman.com',
-  'port' => 465,
-  'encryption' => 'ssl',
-  'username' => 'info@codewithusman.com',
-  'password' => 'Usman105767@@@',
-  'from_email' => 'info@codewithusman.com',
+  'host' => 'mail.newcomerconnect.ca',
+  'port' => 587,
+  'encryption' => 'tls',
+  'username' => 'info@newcomerconnect.ca',
+  'password' => '7osg-9jzh-3xt6-D@@@',
+  'from_email' => 'info@newcomerconnect.ca',
   'from_name' => 'Newcomer Connect',
-  'helo_host' => 'codewithusman.com'
+  'helo_host' => 'newcomerconnect.ca'
 ];

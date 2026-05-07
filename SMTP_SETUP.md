@@ -13,35 +13,35 @@ Example `smtp-config.php`:
 ```php
 <?php
 return [
-	'host' => 'codewithusman.com',
-	'port' => 465,
-	'encryption' => 'ssl',
-	'username' => 'info@codewithusman.com',
+	'host' => 'mail.newcomerconnect.ca',
+	'port' => 587,
+	'encryption' => 'tls',
+	'username' => 'info@newcomerconnect.ca',
 	'password' => 'use-the-email-account-password',
-	'from_email' => 'info@codewithusman.com',
+	'from_email' => 'info@newcomerconnect.ca',
 	'from_name' => 'Newcomer Connect',
-	'helo_host' => 'codewithusman.com'
+	'helo_host' => 'newcomerconnect.ca'
 ];
 ```
 
 ## Optional Environment Variables
 
 - `MAIL_FROM_NAME` (default: `Newcomer Connect`)
-- `ADMIN_EMAIL` (default in code: `humatahir1@gmail.com`)
-- `SUPPORT_EMAIL` (default in code: `info@codewithusman.com`)
+- `ADMIN_EMAIL` (default in code: `info@newcomerconnect.ca`)
+- `SUPPORT_EMAIL` (default in code: `info@newcomerconnect.ca`)
 - `SITE_URL` (default: `https://newcomerconnect.ca`)
 - `SMTP_HELO_HOST` (default: `localhost`)
 - `BOOKING_REMINDER_TOKEN` (optional token for secure HTTP access to `booking-reminders.php` when no admin session is present)
 
 ## Current Server Defaults in Code
 
-- `SMTP_HOST=codewithusman.com`
-- `SMTP_PORT=465`
-- `SMTP_ENCRYPTION=ssl`
-- `SMTP_USERNAME=info@codewithusman.com`
-- `MAIL_FROM_EMAIL=info@codewithusman.com`
-- `SMTP_HELO_HOST=codewithusman.com`
-- `ADMIN_EMAIL=humatahir1@gmail.com`
+- `SMTP_HOST=mail.newcomerconnect.ca`
+- `SMTP_PORT=587`
+- `SMTP_ENCRYPTION=tls`
+- `SMTP_USERNAME=info@newcomerconnect.ca`
+- `MAIL_FROM_EMAIL=info@newcomerconnect.ca`
+- `SMTP_HELO_HOST=newcomerconnect.ca`
+- `ADMIN_EMAIL=info@newcomerconnect.ca`
 
 You still must set:
 
@@ -49,7 +49,7 @@ You still must set:
 
 ## Email Behavior
 
-- Admin inbox target defaults to `humatahir1@gmail.com`.
+- Admin inbox target defaults to `info@newcomerconnect.ca`.
 - Submitters receive an automatic branded confirmation email.
 - Consultation bookings are stored in `data/bookings.json` for the admin panel and reminder workflow.
 - Booking reminder emails can be sent one day before and about one hour before the scheduled consultation time.
@@ -70,11 +70,11 @@ You still must set:
 
 If your host prefers STARTTLS instead of SSL:
 
-- `SMTP_HOST=mail.codewithusman.com`
+- `SMTP_HOST=mail.newcomerconnect.ca`
 - `SMTP_PORT=587`
 - `SMTP_ENCRYPTION=tls`
-- `SMTP_USERNAME=info@codewithusman.com`
-- `MAIL_FROM_EMAIL=info@codewithusman.com`
+- `SMTP_USERNAME=info@newcomerconnect.ca`
+- `MAIL_FROM_EMAIL=info@newcomerconnect.ca`
 
 ## Gmail Example
 
@@ -84,7 +84,7 @@ If your host prefers STARTTLS instead of SSL:
 - `SMTP_USERNAME=yourgmail@gmail.com`
 - `SMTP_PASSWORD=your-gmail-app-password`
 - `MAIL_FROM_EMAIL=yourgmail@gmail.com`
-- `ADMIN_EMAIL=humatahir1@gmail.com`
+- `ADMIN_EMAIL=info@newcomerconnect.ca`
 
 ## Troubleshooting
 
