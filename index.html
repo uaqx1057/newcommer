@@ -112,6 +112,18 @@
   }
   </script>
   <link rel="stylesheet" href="css/home.min.css?v=20260505-darkfix-1">
+  <style>
+    .brand-loader {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    body.brand-loader-lock {
+      overflow: auto !important;
+    }
+  </style>
 </head>
 <body class="home-page">
 
@@ -717,7 +729,12 @@
     </div>
   </footer>
 
-  <script src="js/script.min.js?v=20260430-home-leaf-fix"></script>
+  <script>
+    try {
+      window.sessionStorage.setItem('ncBrandLoaderSeen', '1');
+    } catch (error) {}
+  </script>
+  <script src="js/script.min.js?v=20260508-loader-remove-1"></script>
 </body>
 </html>
 
