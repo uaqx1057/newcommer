@@ -1119,27 +1119,82 @@ ul { list-style: none; }
 }
 
 /*  RESPONSIVE  */
-@media (max-width:1100px) {
-  .hero-layout { grid-template-columns:1fr; gap:48px; padding-top:130px; }
-  .hero-img-card { max-height:400px; aspect-ratio:16/9; }
-  .hero-float-1 { top:14px; right:14px; }
-  .hero-float-2 { bottom:60px; left:14px; }
-  .service-grid { grid-template-columns:repeat(2,1fr); }
-  .features-grid { grid-template-columns:repeat(2,1fr); }
-  .split-section { grid-template-columns:1fr; gap:48px; direction:ltr; }
-  .split-section.reverse { direction:ltr; }
-  .stats-grid { grid-template-columns:repeat(2,1fr); }
-  .process-grid { grid-template-columns:repeat(2,1fr); }
-  .process-grid::before { display:none; }
-  .footer-modern-wrap { max-width: 760px; }
-  .testimonial-grid { grid-template-columns:1fr 1fr; }
+@media (max-width:1100px) and (min-width:768px) {
+  .navbar {
+    gap: 14px;
+  }
+  .navbar .logo {
+    height: 68px;
+  }
+  .navbar .logo img {
+    height: 68px;
+  }
+  #navMenu {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+  #navMenu a {
+    padding: 7px 9px;
+    font-size: .82rem;
+  }
+  #navMenu a::after {
+    left: 9px;
+    right: 9px;
+    bottom: 4px;
+  }
+  .theme-switcher-item {
+    margin-left: 6px;
+  }
+  .nav-cta {
+    padding: 8px 16px !important;
+    font-size: .82rem !important;
+    margin-left: 4px;
+  }
+  .section {
+    padding: 82px 0;
+  }
+  .hero-layout {
+    gap: 36px;
+  }
+  .hero-img-card {
+    max-height: 460px;
+  }
+  .hero-float-1 {
+    top: 16px;
+    right: 16px;
+  }
+  .hero-float-2 {
+    bottom: 48px;
+    left: 16px;
+  }
+  .service-grid,
+  .features-grid,
+  .process-grid,
+  .footer-modern-grid {
+    gap: 20px;
+  }
+  .split-section {
+    gap: 36px;
+  }
+  .footer-modern-wrap {
+    max-width: 960px;
+  }
 }
-@media (max-width:768px) {
+@media (max-width:767px) {
   .section { padding:68px 0; }
   body { font-size: 15px; }
   header { padding: 10px 0; }
   .home-gallery-section { display: none; }
   .home-about-section .split-visual { display: none; }
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding-top: 130px;
+  }
+  .hero-img-card { max-height:400px; aspect-ratio:16/9; }
+  .hero-float-1 { top:14px; right:14px; }
+  .hero-float-2 { bottom:60px; left:14px; }
   .logo { font-size: 0; gap: 0; }
   .navbar .logo { height: 56px; }
   .logo img { height: 56px; }
@@ -1191,10 +1246,33 @@ ul { list-style: none; }
     bottom: 8px;
     gap: 6px;
   }
+  .split-section { grid-template-columns:1fr; gap:48px; direction:ltr; }
+  .split-section.reverse { direction:ltr; }
+  .info-band {
+    padding: 18px 0;
+  }
+  .info-band-inner {
+    gap: 12px;
+  }
+  .info-band-item {
+    width: 100%;
+    font-size: .9rem;
+  }
+  .stats-band {
+    padding: 44px 0;
+  }
   .stats-grid { grid-template-columns:repeat(2,1fr); }
+  .stats-grid { gap: 8px; }
+  .stat-item {
+    padding: 20px 12px;
+  }
   .stat-item+.stat-item::before { display:none; }
+  .stat-label {
+    line-height: 1.45;
+  }
   .process-grid { grid-template-columns:1fr; }
   .slide { aspect-ratio: 16 / 11; }
+  .footer-modern-wrap { max-width: 760px; }
   .footer-modern-wrap { padding: 64px 0 40px; }
   .footer-pill { min-width: 100%; }
   .footer-modern-line { margin-top: 34px; }
@@ -1210,6 +1288,13 @@ ul { list-style: none; }
 }
 @media (max-width:480px) {
   .container { padding:0 16px; }
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .info-band-item {
+    align-items: flex-start;
+  }
   .logo {
     font-size: 0;
     max-width: calc(100vw - 130px);
@@ -1292,9 +1377,9 @@ ul { list-style: none; }
   .process-step h3 { font-size: .9rem; }
   .process-step p { font-size: .8rem; }
 
-  .stat-item { padding: 22px 10px; }
-  .stat-num { font-size: 1.8rem; margin-bottom: 5px; }
-  .stat-label { font-size: .75rem; }
+  .stat-item { padding: 18px 12px; }
+  .stat-num { font-size: 1.95rem; margin-bottom: 6px; }
+  .stat-label { font-size: .78rem; line-height: 1.45; }
 
   .t-text { font-size: .88rem; margin-bottom: 16px; }
   .t-avatar { width: 38px; height: 38px; font-size: .9rem; }
@@ -1307,8 +1392,8 @@ ul { list-style: none; }
   }
   .btn-group { gap: 10px; }
 
-  .info-band { padding: 14px 0; }
-  .info-band-item { font-size: .8rem; gap: 8px; }
+  .info-band { padding: 16px 0; }
+  .info-band-item { font-size: .84rem; gap: 8px; }
   .info-band-item span { font-size: 1rem; }
 
   .slide-overlay { padding: 14px; }
